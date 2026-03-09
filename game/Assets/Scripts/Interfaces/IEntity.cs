@@ -1,4 +1,5 @@
-interface IEntity
+using UnityEngine;
+public interface IEntity
 {
     public enum EntityState
     {
@@ -40,4 +41,21 @@ interface IEntity
     /// <returns> Nothing </returns>
     /// <remarks>Note: needs a range check</remarks>
     void Attack();
+
+    /// Function: TakeDamage
+    /// <summary>
+    /// Purpose: Entity health reduces
+    /// </summary>
+    /// <param name="amount"> how much damage does the entity get</param>
+    /// <returns> Nothing </returns>
+    /// <remarks>Note: needed by the bullet to check </remarks>
+    void TakeDamage(int amount);
+    
+    /// Function: SetState
+    /// <summary>
+    /// Purpose: Updates the state of the entity
+    /// </summary>
+    /// <returns> Nothing </returns>
+    /// <remarks>Note: use Entity State to set current function logic</remarks>
+    void SetTarget(Transform target);
 }

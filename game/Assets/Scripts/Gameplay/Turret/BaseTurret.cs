@@ -1,0 +1,67 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public class BaseTurret : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] List<Transform> visibleTargets = new List<Transform>();
+    [SerializeField] GameObject target;
+    IRotate rotateScript;
+    IFire fireScript;
+    ITurret turretScript;
+    void Start()
+    {
+        rotateScript = this.gameObject.GetComponent<IRotate>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+    private void FixedUpdate()
+    {
+        if(target != null)
+        {
+        rotateScript.Rotate(target.transform);
+        }
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!other.gameObject.CompareTag("Entity"))
+        {
+            return;
+        }
+
+        visibleTargets.Add(other.gameObject.transform);
+        SetTarget(other.gameObject);
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!other.gameObject.CompareTag("Entity"))
+        {
+            return;
+        }
+        if(target != null)
+        {
+            if (GameObject.ReferenceEquals(target, other.gameObject))
+            {
+                target = null;
+            }
+        }
+
+        visibleTargets.Remove(other.gameObject.transform);
+    }
+
+    private void SetTarget(GameObject newTarget)
+    {
+        if (target == null)
+        {
+            target = newTarget;
+        }
+    }
+}
