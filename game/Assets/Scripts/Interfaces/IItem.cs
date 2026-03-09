@@ -1,4 +1,4 @@
-interface IItem
+public interface IItem
 {
     
 }

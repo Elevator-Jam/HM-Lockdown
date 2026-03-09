@@ -1,4 +1,4 @@
-interface ICurrency
+public interface ICurrency
 {
     public enum Type
     {

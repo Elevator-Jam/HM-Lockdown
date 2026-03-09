@@ -1,4 +1,4 @@
-interface ISlot
+public interface ISlot
 {
     /// Function: IsOccupied
     /// <summary>
