@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
+using TMPro;
 public class CurrencyManager : SingletonConstructor<CurrencyManager>
 {
     [SerializeField] int _totalScraps;
     [SerializeField] List<ICurrency> currencyList = new List<ICurrency>();
-
+    [SerializeField] TMP_Text scrapText;
     private void Awake()
     {
         ConstructSingleton(this); // ! DO NOT DELETE
@@ -70,9 +72,10 @@ public class CurrencyManager : SingletonConstructor<CurrencyManager>
     /// </summary>
     /// <returns> Nothing </returns>
     /// <remarks>Note: used once player collects scrap</remarks>
-    void AddScrap()
+    public void AddScrap(int value)
     {
-        
+        _totalScraps += value;
+        UpdateCurrencyText();
     }
 
     /// Function: SubtractScrap
@@ -81,8 +84,14 @@ public class CurrencyManager : SingletonConstructor<CurrencyManager>
     /// </summary>
     /// <returns> Nothing </returns>
     /// <remarks>Note: used once player spends scrap on buildings, upgrades, repairs, and anything that needs scraps</remarks>
-    void SubtractScrap()
+    public void SubtractScrap(int value)
     {
-        
+        _totalScraps -= value;
+        UpdateCurrencyText();
+    }
+
+    void UpdateCurrencyText()
+    {
+        scrapText.text = _totalScraps.ToString();
     }
 }

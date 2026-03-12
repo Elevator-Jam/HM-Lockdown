@@ -3,6 +3,7 @@ using System.Collections;
 public class BaseHoodlin : MonoBehaviour, IEntity
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] GameObject scrapPrefab;
     [SerializeField] Transform target;
     [SerializeField] Rigidbody2D rb2D;
     [SerializeField] int health = 100;
@@ -27,7 +28,7 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     }
     public void DropScrap()
     {
-
+        Instantiate(scrapPrefab, transform.position, Quaternion.identity);
     }
     public void Move()
     {
@@ -38,7 +39,7 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     }
     public void Attack()
     {
-        GameObject.FindGameObjectWithTag("UIManager").GetComponent<HealthBar>().TakeDamage(damage);
+        HealthManager.Instance.TakeDamage(damage);
     }
 
     IEnumerator AttackCooldown()
@@ -54,6 +55,7 @@ public class BaseHoodlin : MonoBehaviour, IEntity
         health -= amount;
         if (health <= 0)
         {
+            DropScrap();
             Destroy(this.gameObject);
         }
     }

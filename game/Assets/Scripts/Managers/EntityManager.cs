@@ -44,12 +44,10 @@ public class EntityManager : SingletonConstructor<EntityManager>
 
     // TODO: create a spawn locator to indicate where entities can spawn based on type
 
-    public bool canSpawn;
     [SerializeField] List<WaveInfo> WaveSpawn = new List<WaveInfo>();
     [SerializeField] List<Transform> SpawnPoints = new List<Transform>();
     [SerializeField] int currentWave;
     [SerializeField] int spawnCooldownInSeconds;
-    [SerializeField] int currentTimer;
     [SerializeField] Transform target;
     [System.Serializable]
     struct WaveInfo
@@ -63,9 +61,9 @@ public class EntityManager : SingletonConstructor<EntityManager>
         return SpawnPoints[pointSelected];
     }
 
-    IEnumerator SpawnCooldown()
+    public IEnumerator SpawnCooldown()
     {
-        while(currentTimer > 0)
+        while(true)
         {
             int entitySelected = Random.Range(0,WaveSpawn[currentWave].EntityList.Count);
             Transform pointeSelected = SetSpawnpoint();
@@ -73,25 +71,5 @@ public class EntityManager : SingletonConstructor<EntityManager>
             entity.GetComponent<IEntity>().SetTarget(target);
             yield return new WaitForSeconds(spawnCooldownInSeconds);
         }
-    }
-
-    // ! DELETE AFTER SHOOTING VIDEO
-    IEnumerator Timer()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(1f);
-            currentTimer--;
-
-            if(currentTimer <= 0f)
-            {
-                currentTimer = 20;
-            }
-        }
-    }
-
-    private void Start() {
-        StartCoroutine(SpawnCooldown());
-        StartCoroutine(Timer());
     }
 }

@@ -213,6 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b5b28e8565afd4e86ab5134aeb06a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseHoodlin
+  scrapPrefab: {fileID: 4905490529062152640, guid: d7161d3ae76380045a228351dd5f19f2, type: 3}
   target: {fileID: 0}
   rb2D: {fileID: 0}
   health: 100

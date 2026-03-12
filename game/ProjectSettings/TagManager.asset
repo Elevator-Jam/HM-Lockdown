@@ -8,6 +8,11 @@ TagManager:
   - EntityManager
   - House
   - UIManager
+  - GameManager
+  - HealthManager
+  - BuildingManager
+  - Turret
+  - CurrencyManager
   layers:
   - Default
   - TransparentFX
