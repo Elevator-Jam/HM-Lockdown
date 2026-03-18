@@ -2,9 +2,46 @@ using UnityEngine;
 
 public class BuildingManager : SingletonConstructor<BuildingManager>
 {
+    [SerializeField] GameObject turretSelected;
+    [SerializeField] int turretValue;
+    [SerializeField] GameObject socketDisplay;
     private void Awake()
     {
         ConstructSingleton(this); // ! DO NOT DELETE
+    }
+
+    public GameObject GetTurretSelected()
+    {
+        return turretSelected;
+    }
+    public void SetTurretSelected(GameObject turret)
+    {
+        if(turretSelected != turret)
+        {
+            turretSelected = turret;
+            socketDisplay.SetActive(true);
+        }
+        else
+        {
+            turretSelected = null;
+            socketDisplay.SetActive(false);
+        }
+    }
+
+    public int GetTurretValue()
+    {
+        return turretValue;
+    }
+    public void SetTurretValue(int value)
+    {
+        if(turretSelected == null)
+        {
+            turretValue = 0;
+        }
+        else
+        {
+            turretValue = value;
+        }
     }
 
     /// Function: Upgrade

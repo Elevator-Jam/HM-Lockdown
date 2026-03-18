@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class BaseTurret : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] List<Transform> visibleTargets = new List<Transform>();
     [SerializeField] GameObject target;
     IRotate rotateScript;
@@ -15,11 +14,7 @@ public class BaseTurret : MonoBehaviour
         rotateScript = this.gameObject.GetComponent<IRotate>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
     private void FixedUpdate()
     {
         if(target != null)
