@@ -28,6 +28,8 @@ public class BuildingManager : SingletonConstructor<BuildingManager>
         }
     }
 
+    
+
     public int GetTurretValue()
     {
         return turretValue;

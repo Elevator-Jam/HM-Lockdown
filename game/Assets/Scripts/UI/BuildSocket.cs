@@ -12,12 +12,14 @@ public class BuildSocket : MonoBehaviour
         {
             return false;
         }
+        if(CurrencyManager.Instance.GetScrap() < 0)
         if (placeable.tag != acceptedTag || placeable == null)
         {
             return false;
         }
         return true;
     }
+
     public void Occupy()
     {
         if(CanAccept(BuildingManager.Instance.GetTurretSelected()))

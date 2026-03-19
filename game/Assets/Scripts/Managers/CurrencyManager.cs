@@ -8,6 +8,7 @@ public class CurrencyManager : SingletonConstructor<CurrencyManager>
     [SerializeField] int _totalScraps;
     [SerializeField] List<ICurrency> currencyList = new List<ICurrency>();
     [SerializeField] TMP_Text scrapText;
+    [SerializeField] bool reset;
     private void Awake()
     {
         ConstructSingleton(this); // ! DO NOT DELETE
@@ -15,6 +16,7 @@ public class CurrencyManager : SingletonConstructor<CurrencyManager>
     private void Start()
     {
         ResetResources();
+        UpdateCurrencyText();
     }
 
     /// Function: ResetResources
@@ -25,6 +27,10 @@ public class CurrencyManager : SingletonConstructor<CurrencyManager>
     /// <remarks>Note: if values need to be saved, look up PlayerPrefs </remarks>
     void ResetResources()
     {
+        if(!reset)
+        {
+            return;
+        }
         _totalScraps = 0;
     }
 
@@ -88,6 +94,11 @@ public class CurrencyManager : SingletonConstructor<CurrencyManager>
     {
         _totalScraps -= value;
         UpdateCurrencyText();
+    }
+
+    public int GetScrap()
+    {
+        return _totalScraps;
     }
 
     void UpdateCurrencyText()
