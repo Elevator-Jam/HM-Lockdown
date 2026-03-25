@@ -3708,7 +3708,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 14.299062, y: 6.7937484}
+  m_Size: {x: 12, y: 6.7937484}
   m_EdgeRadius: 0
 --- !u!1 &1439190089
 GameObject:
@@ -4962,6 +4962,10 @@ PrefabInstance:
     - target: {fileID: 7470589141551505728, guid: 5a5b2f7c62c017147861b85cf624302b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7857908405231999510, guid: 5a5b2f7c62c017147861b85cf624302b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
