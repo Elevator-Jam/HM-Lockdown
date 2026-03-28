@@ -13,17 +13,22 @@ TagManager:
   - BuildingManager
   - Turret
   - CurrencyManager
+  - SpellLocationLeft
+  - SpellLocationRight
+  - AbilityManager
+  - SpellEntity
+  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Payloads
+  - Enemy
+  - Bullets
+  - Detection
   - 
   - 
   - 
