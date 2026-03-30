@@ -12,7 +12,7 @@ public class airstrike_payload : MonoBehaviour
     // Collision detection with the ground "aka go boom".
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Ground")
+        if (other.gameObject.CompareTag("Ground"))
         {
             // Fire trigger condition for explosion animation
             _animator.SetTrigger("payloadDropped");
