@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PostGame : MonoBehaviour
+public class PostGameMenu : UIPanel
 {
     // Loads post game scene when the game ends
     public void OnGameFinish(int enemiesDefeated)
@@ -17,12 +17,14 @@ public class PostGame : MonoBehaviour
     // Restarts game on button clicked
     public void OnClickPlayAgain()
     {
-        // Restart main scene when "play again" button is clicked
+        GameManager.Instance.RestartGame();
+        base.Hide();
     }
     
     // Returns to main menu
     public void OnClickMainMenu()
     {
-        // Load main menu scene when "return to main menu" button is clicked
+        // switch ui to main menu ui
+        UIManager.Instance.SwitchToMainMenu();
     }
 }

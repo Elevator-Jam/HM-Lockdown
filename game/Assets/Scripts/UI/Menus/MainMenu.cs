@@ -1,34 +1,32 @@
+using UnityEditor.Search;
 using UnityEngine;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : UIPanel
 {
-    // Loads main scene when the "play" button is clicked
+    
     public void OnClickPlay()
     {
-        // Load main scene
+        // start game
+        // hide ui
+        base.Hide();
     }
 
     // Opens settings menu when the "settings" button is clicked
     public void OnClickSettings()
     {
         // Open settings menu
+        UIManager.Instance.SwitchToSettingsMenu();
     }
 
     // Quits game when the "exit" button is clicked
     public void OnClickExit()
     {
-        // Quit game
+        UIManager.Instance.ExitGame();
     }
 
     // Opens a menu that displays credits when the "credits" button is clicked
     public void OnClickCredits()
     {
-        // Opens credits menu
-    }
-
-    // Closes credits menu when "close credits" button is clicked
-    public void OnClickCloseCredits()
-    {
-        // Close credits menu
+        UIManager.Instance.SwitchToCredits();
     }
 }

@@ -43,6 +43,7 @@ public class GameManager : SingletonConstructor<GameManager>
         lose,
         win
     }
+
     [Header("Game State")]
     [SerializeField] GameState gameState;
     /// Function: SetState
@@ -95,6 +96,21 @@ public class GameManager : SingletonConstructor<GameManager>
     public int GetCurrentWave()
     {
         return currentWave;
+    }
+
+    public void PauseGame()
+    {
+        Debug.LogWarning("function not yet implemented");
+    }
+
+    public void UnpauseGame()
+    {
+        Debug.LogWarning("function not yet implemented");
+    }
+
+    public void RestartGame()
+    {
+        Debug.LogWarning("function not yet implemented");
     }
 
     private void Start()
