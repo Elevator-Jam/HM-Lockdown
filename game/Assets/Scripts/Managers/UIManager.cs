@@ -1,7 +1,18 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UIManager : SingletonConstructor<UIManager>
 {
+
+    [SerializeField]
+    private GameObject mainMenu;
+    [SerializeField]
+    private GameObject pauseMenu;
+    [SerializeField]
+    private GameObject postGameMenu;
+    [SerializeField]
+    private GameObject settingsMenu;
+
     private void Awake()
     {
         ConstructSingleton(this); // ! DO NOT DELETE
@@ -35,6 +46,11 @@ public class UIManager : SingletonConstructor<UIManager>
     /// <returns> Nothing </returns>
     /// <remarks>Note:</remarks>
     void EnableUIs()
+    {
+        
+    }
+
+    public void SwitchUI2()
     {
         
     }
