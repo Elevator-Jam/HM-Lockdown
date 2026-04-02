@@ -1,35 +1,36 @@
 using UnityEngine;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : UIPanel
 {
     // Pauses the game and opens the pause menu when the "pause" button is clicked
     public void OnClickPause()
     {
-        // Pause game 
-        // open pause menu
-        this.gameObject.SetActive(true);
-
+        // show pause menu
+        base.Show();
+        // pause game
     }
 
     // Resumes the game and closes the pause menu
     public void OnClickResume()
     {
         // Close pause menu
-        this.gameObject.SetActive(false);
+        UIManager.Instance.CloseTopUI();
         //resume game
     }
 
     // Return to main menu when "exit" button is clicked
     public void OnClickExit()
     {
-        // Check if game is paused
-        // Load main menu scene
+        // finish/restart game
+        // switch main menu UI
+        UIManager.Instance.SwitchToMainMenu();
     }
 
     // Opens settings menu when "settings" button is clicked
     public void OnClickSettings()
     {
-        // Check if game is paused
-        // Open settings menu
+        // pause game
+        // Open settings menu UI
+        UIManager.Instance.SwitchToSettingsMenu();
     }
 }
