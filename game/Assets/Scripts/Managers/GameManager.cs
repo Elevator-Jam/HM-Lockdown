@@ -1,12 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 public class GameManager : SingletonConstructor<GameManager>
 {
     private void Awake()
     {
         ConstructSingleton(this); // ! DO NOT DELETE
     }
+
+    [Header("UI Manager")]
+    [SerializeField] UIManager uiManager;
+
+    [Header("Entity Manager")]
+    [SerializeField] EntityManager entityManager;
+
     [Header("Game Timer")]
     [SerializeField] Slider timerSlider;
     [SerializeField] int currentTimer;
@@ -18,6 +26,12 @@ public class GameManager : SingletonConstructor<GameManager>
     [SerializeField] int survivalTimeInSeconds;
     [Header("Wave Tracker")]
     [SerializeField] int currentWave;
+
+    [SerializeField] int currentEnemies;
+
+    [Header("Background Images")]
+    [SerializeField] GameObject backgroundNight;
+    [SerializeField] GameObject backgroundDay;
     void SetTimer(int TimeInMinutes, int TimeInSeconds)
     {
         int totalTime = (TimeInMinutes * 60) + TimeInSeconds;
@@ -36,7 +50,7 @@ public class GameManager : SingletonConstructor<GameManager>
             timerSlider.value = currentTimer;
         }
     }
-    enum GameState
+    public enum GameState
     {
         preparation,
         survival,
@@ -45,7 +59,7 @@ public class GameManager : SingletonConstructor<GameManager>
     }
 
     [Header("Game State")]
-    [SerializeField] GameState gameState;
+    [SerializeField] public GameState gameState;
     /// Function: SetState
     /// <summary>
     /// Purpose: Sets the state based on the current situation of the game
@@ -53,7 +67,7 @@ public class GameManager : SingletonConstructor<GameManager>
     /// <returns> Nothing </returns>
     /// <remarks>Note: Use a switch statement</remarks>
     Coroutine spawnRoutine;
-    void SetState()
+    public void SetState()
     {
         switch (gameState)
         {
@@ -61,36 +75,69 @@ public class GameManager : SingletonConstructor<GameManager>
                 currentWave++;
                 SetTimer(preparationTimeInMinutes, preparationTimeInSeconds);
                 StartCoroutine(Timer());
-                if(spawnRoutine != null)
+                if (spawnRoutine != null)
                 {
                     StopCoroutine(spawnRoutine);
                 }
                 break;
+
             case GameState.survival:
                 SetTimer(survivalTimeInMinutes, survivalTimeInSeconds);
                 StartCoroutine(Timer());
                 spawnRoutine = StartCoroutine(EntityManager.Instance.SpawnCooldown());
                 break;
+
             case GameState.lose:
+                Debug.Log("Game lost");
+                // Pause game
+                Time.timeScale = 0;
+                // Display post game menu
+                uiManager.SwitchToPostGameMenu();
                 break;
+
             case GameState.win:
+                Debug.Log("Game won");
+                // Pause game
+                Time.timeScale = 0;
+                // Display post game menu
+                uiManager.SwitchToPostGameMenu();
                 break;
             default:
                 break;
         }
+
+        Debug.Log(gameState);
+
     }
 
     void ChangeState()
     {
         switch (gameState)
         {
+            // Change game state to surviavl phase
+            // Set background to "day"
             case GameState.preparation:
                 gameState = GameState.survival;
+                backgroundNight.SetActive(false);
                 break;
+
+            // If the survival phase is not the final wave
+            // Change game state to preparation
+            // Set background to "night"
             case GameState.survival:
-                gameState = GameState.preparation;
+                if (currentWave >= 3)
+                {
+                    gameState = GameState.win;
+                }
+                else
+                {
+                    gameState = GameState.preparation;
+                    backgroundNight.SetActive(true);
+                }
                 break;
         }
+
+        SetState();
     }
 
     public int GetCurrentWave()
@@ -122,8 +169,11 @@ public class GameManager : SingletonConstructor<GameManager>
     {
         if (currentTimer < 0)
         {
-            ChangeState();
-            SetState();
+            // Continue changing states if win/loss state is not active
+            if (gameState != GameState.win && gameState != GameState.lose)
+            {
+                ChangeState();
+            }
         }
     }
 }

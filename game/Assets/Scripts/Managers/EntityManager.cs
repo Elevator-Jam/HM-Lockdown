@@ -8,7 +8,7 @@ public class EntityManager : SingletonConstructor<EntityManager>
     {
         ConstructSingleton(this); // ! DO NOT DELETE
     }
-    
+
     // TODO: Create an optimized Object pool
     /// Function: WaveLoader
     /// <summary>
@@ -47,7 +47,7 @@ public class EntityManager : SingletonConstructor<EntityManager>
     [SerializeField] List<WaveInfo> WaveSpawn = new List<WaveInfo>();
     [SerializeField] List<Transform> SpawnPoints = new List<Transform>();
     [SerializeField] int currentWave;
-    [SerializeField] int spawnCooldownInSeconds;
+    [SerializeField] float spawnCooldownInSeconds;
     [SerializeField] Transform target;
     [System.Serializable]
     struct WaveInfo
@@ -63,9 +63,9 @@ public class EntityManager : SingletonConstructor<EntityManager>
 
     public IEnumerator SpawnCooldown()
     {
-        while(true)
+        while (true)
         {
-            int entitySelected = Random.Range(0,WaveSpawn[currentWave].EntityList.Count);
+            int entitySelected = Random.Range(0, WaveSpawn[currentWave].EntityList.Count);
             Transform pointeSelected = SetSpawnpoint();
             GameObject entity = Instantiate(WaveSpawn[currentWave].EntityList[entitySelected], pointeSelected.position, Quaternion.identity);
             entity.GetComponent<IEntity>().SetTarget(target);
