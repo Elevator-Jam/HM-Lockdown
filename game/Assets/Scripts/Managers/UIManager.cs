@@ -64,7 +64,7 @@ public class UIManager : SingletonConstructor<UIManager>
         CloseTopUI();
         //activate panelID
         OpenUI(panelID);
-        
+
     }
 
     /// Function: Closes all UI opened 
@@ -88,7 +88,7 @@ public class UIManager : SingletonConstructor<UIManager>
     /// </summary>
     /// <returns> Nothing </returns>
     /// <remarks>Note:</remarks>
-    private void OpenUI(UIPanel.PanelID panelID) 
+    private void OpenUI(UIPanel.PanelID panelID)
     {
         if (!panels.ContainsKey(panelID))
         {
@@ -104,7 +104,7 @@ public class UIManager : SingletonConstructor<UIManager>
         panel.Show(); // show new UI
     }
 
- 
+
     public void CloseTopUI()
     {
         if (panelStack.Count == 0)
@@ -120,5 +120,5 @@ public class UIManager : SingletonConstructor<UIManager>
         }
     }
 
-    
+
 }

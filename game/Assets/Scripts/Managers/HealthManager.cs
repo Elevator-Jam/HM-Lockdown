@@ -9,6 +9,7 @@ public class HealthManager : SingletonConstructor<HealthManager>
     [SerializeField] int MAX_HEALTH;
     [SerializeField] int currentHealth;
     [SerializeField] Slider healthSlider;
+    [SerializeField] GameManager gameManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,7 +29,7 @@ public class HealthManager : SingletonConstructor<HealthManager>
     /// <remarks>Note: if the value is greater than the max health, set it to the max health</remarks>
     public void Heal(int amount)
     {
-        
+
     }
     /// Function: TakeDamage
     /// <summary>
@@ -40,10 +41,12 @@ public class HealthManager : SingletonConstructor<HealthManager>
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
-        if(currentHealth < 0)
+        if (currentHealth < 0)
         {
             currentHealth = 0;
             // call lose sequence here
+            gameManager.gameState = GameManager.GameState.lose;
+            gameManager.SetState();
         }
         healthSlider.value = currentHealth;
     }
@@ -55,6 +58,6 @@ public class HealthManager : SingletonConstructor<HealthManager>
     /// <remarks>Note: needs sprite renderers and a container at which stage it's currently at</remarks>
     void SetSprite()
     {
-        
+
     }
 }
