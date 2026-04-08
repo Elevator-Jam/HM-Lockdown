@@ -7417,7 +7417,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1163210836
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10451,6 +10451,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _tag: GameManager
+  uiManager: {fileID: 0}
+  entityManager: {fileID: 0}
   timerSlider: {fileID: 803475234}
   currentTimer: 0
   preparationTimeInMinutes: 0
@@ -10458,6 +10460,9 @@ MonoBehaviour:
   survivalTimeInMinutes: 0
   survivalTimeInSeconds: 15
   currentWave: 0
+  currentEnemies: 0
+  backgroundNight: {fileID: 652370180}
+  backgroundDay: {fileID: 1237509213}
   gameState: 0
 --- !u!1 &1567655807
 GameObject:
@@ -13187,6 +13192,7 @@ MonoBehaviour:
   MAX_HEALTH: 100
   currentHealth: 0
   healthSlider: {fileID: 289965930}
+  gameManager: {fileID: 0}
 --- !u!4 &2119744793
 Transform:
   m_ObjectHideFlags: 0
