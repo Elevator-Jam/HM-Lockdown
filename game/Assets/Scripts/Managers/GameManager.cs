@@ -17,7 +17,7 @@ public class GameManager : SingletonConstructor<GameManager>
 
     [Header("Game Timer")]
     [SerializeField] Slider timerSlider;
-    [SerializeField] int currentTimer;
+    [SerializeField] float currentTimer;
     [Header("Preparation Time")]
     [SerializeField] int preparationTimeInMinutes;
     [SerializeField] int preparationTimeInSeconds;
@@ -41,15 +41,6 @@ public class GameManager : SingletonConstructor<GameManager>
         timerSlider.minValue = 0f;
     }
 
-    IEnumerator Timer()
-    {
-        while (currentTimer >= 0)
-        {
-            yield return new WaitForSeconds(1f);
-            currentTimer--;
-            timerSlider.value = currentTimer;
-        }
-    }
     public enum GameState
     {
         preparation,
@@ -74,7 +65,6 @@ public class GameManager : SingletonConstructor<GameManager>
             case GameState.preparation:
                 currentWave++;
                 SetTimer(preparationTimeInMinutes, preparationTimeInSeconds);
-                StartCoroutine(Timer());
                 if (spawnRoutine != null)
                 {
                     StopCoroutine(spawnRoutine);
@@ -83,7 +73,6 @@ public class GameManager : SingletonConstructor<GameManager>
 
             case GameState.survival:
                 SetTimer(survivalTimeInMinutes, survivalTimeInSeconds);
-                StartCoroutine(Timer());
                 spawnRoutine = StartCoroutine(EntityManager.Instance.SpawnCooldown());
                 break;
 
@@ -175,6 +164,10 @@ public class GameManager : SingletonConstructor<GameManager>
                 ChangeState();
             }
         }
+
+        currentTimer -= Time.deltaTime;
+        timerSlider.value = currentTimer;
+        
     }
 }
 
