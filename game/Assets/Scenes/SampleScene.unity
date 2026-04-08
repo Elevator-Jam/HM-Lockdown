@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '   100'
+  m_text: 100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -429,8 +429,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: 6.5, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 4.3128967, y: 0.39769745}
+  m_SizeDelta: {x: 4.1296, y: 0.6044}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &26230555
 MonoBehaviour:
@@ -2244,7 +2244,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 14.31897, y: 0}
+  m_AnchoredPosition: {x: 14.318848, y: 0}
   m_SizeDelta: {x: -1736.939, y: -1024.549}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &321584906
@@ -2892,12 +2892,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
   m_Padding:
-    m_Left: 0
+    m_Left: 20
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 3
-  m_Spacing: 10
+  m_Spacing: 60
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -2997,7 +2997,7 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 0
-    m_Bottom: 0
+    m_Bottom: 150
   m_ChildAlignment: 4
   m_Spacing: 200
   m_ChildForceExpandWidth: 0
@@ -3533,12 +3533,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
   m_Padding:
-    m_Left: 0
+    m_Left: 20
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 3
-  m_Spacing: 10
+  m_Spacing: 60
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -6246,8 +6246,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_AnchoredPosition: {x: -7.9211, y: 0}
+  m_SizeDelta: {x: 25.8421, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1020639709
 MonoBehaviour:
@@ -6827,7 +6827,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '   100'
+  m_text: 100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8737,8 +8737,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 12.098389, y: -0.010009766}
-  m_SizeDelta: {x: -1812.1831, y: -1048.082}
+  m_AnchoredPosition: {x: 12.098389, y: 3.8002}
+  m_SizeDelta: {x: -1812.1831, y: -1395.6805}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1393411300
 MonoBehaviour:
@@ -8977,8 +8977,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_AnchoredPosition: {x: -2.4394073, y: 0}
+  m_SizeDelta: {x: 14.8789, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1403837275
 MonoBehaviour:
@@ -10451,8 +10451,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _tag: GameManager
-  uiManager: {fileID: 0}
-  entityManager: {fileID: 0}
+  uiManager: {fileID: 304741398}
+  entityManager: {fileID: 2059256061}
   timerSlider: {fileID: 803475234}
   currentTimer: 0
   preparationTimeInMinutes: 0
@@ -13192,7 +13192,7 @@ MonoBehaviour:
   MAX_HEALTH: 100
   currentHealth: 0
   healthSlider: {fileID: 289965930}
-  gameManager: {fileID: 0}
+  gameManager: {fileID: 1561027250}
 --- !u!4 &2119744793
 Transform:
   m_ObjectHideFlags: 0
