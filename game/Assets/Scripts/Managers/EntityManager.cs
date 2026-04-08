@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using UnityEngine.Rendering.Universal;
+using Unity.Android.Gradle.Manifest;
 
 public class EntityManager : SingletonConstructor<EntityManager>
 {
@@ -48,6 +51,8 @@ public class EntityManager : SingletonConstructor<EntityManager>
     [SerializeField] List<Transform> SpawnPoints = new List<Transform>();
     [SerializeField] int currentWave;
     [SerializeField] float spawnCooldownInSeconds;
+
+    [SerializeField] bool leftSpawn = false;
     [SerializeField] Transform target;
     [System.Serializable]
     struct WaveInfo
@@ -58,6 +63,7 @@ public class EntityManager : SingletonConstructor<EntityManager>
     Transform SetSpawnpoint()
     {
         int pointSelected = Random.Range(0, SpawnPoints.Count);
+
         return SpawnPoints[pointSelected];
     }
 
@@ -69,6 +75,13 @@ public class EntityManager : SingletonConstructor<EntityManager>
             Transform pointeSelected = SetSpawnpoint();
             GameObject entity = Instantiate(WaveSpawn[currentWave].EntityList[entitySelected], pointeSelected.position, Quaternion.identity);
             entity.GetComponent<IEntity>().SetTarget(target);
+
+            if (entity.transform.position.x < 0)
+            {
+                SpriteRenderer enemySprite = entity.GetComponentInChildren<SpriteRenderer>();
+                enemySprite.flipX = true;
+            }
+
             yield return new WaitForSeconds(spawnCooldownInSeconds);
         }
     }
