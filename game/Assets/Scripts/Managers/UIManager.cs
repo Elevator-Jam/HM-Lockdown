@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class UIManager : SingletonConstructor<UIManager>
@@ -29,9 +28,16 @@ public class UIManager : SingletonConstructor<UIManager>
     {
         SwitchUI(UIPanel.PanelID.PauseMenu);
     }
-    public void SwitchToPostGameMenu()
+    public void SwitchToPostGameMenu(bool isWin)
     {
         SwitchUI(UIPanel.PanelID.PostGameMenu);
+        if (isWin)
+        {
+            ((PostGameMenu)panelStack.Peek()).ShowWin();
+        } else
+        {
+            ((PostGameMenu)panelStack.Peek()).ShowLose();
+        }
     }
     public void SwitchToSettingsMenu()
     {
@@ -45,11 +51,6 @@ public class UIManager : SingletonConstructor<UIManager>
     public void SwitchToCredits()
     {
         SwitchUI(UIPanel.PanelID.CreditsMenu);
-    }
-
-    public void ExitGame()
-    {
-        Application.Quit();
     }
 
     /// Function: SwitchUI

@@ -18,6 +18,8 @@ TagManager:
   - AbilityManager
   - SpellEntity
   - Ground
+  - Win_Panel
+  - Lose_Panel
   layers:
   - Default
   - TransparentFX

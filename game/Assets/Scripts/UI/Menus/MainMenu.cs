@@ -5,9 +5,10 @@ public class MainMenu : UIPanel
     
     public void OnClickPlay()
     {
-        // start game
         // hide ui
         base.Hide();
+        // start game
+        GameManager.Instance.StartGame();
     }
 
     // Opens settings menu when the "settings" button is clicked
@@ -20,7 +21,7 @@ public class MainMenu : UIPanel
     // Quits game when the "exit" button is clicked
     public void OnClickExit()
     {
-        UIManager.Instance.ExitGame();
+        GameManager.Instance.ExitGame();
     }
 
     // Opens a menu that displays credits when the "credits" button is clicked
