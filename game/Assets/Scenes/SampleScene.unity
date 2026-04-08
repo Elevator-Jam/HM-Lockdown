@@ -5773,7 +5773,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 100
-  m_WholeNumbers: 1
+  m_WholeNumbers: 0
   m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8737,7 +8737,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 12.098389, y: 3.8002}
+  m_AnchoredPosition: {x: 12.098389, y: 3.800171}
   m_SizeDelta: {x: -1812.1831, y: -1395.6805}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1393411300
@@ -12962,6 +12962,7 @@ MonoBehaviour:
   - {fileID: 1822721966}
   currentWave: 0
   spawnCooldownInSeconds: 2
+  leftSpawn: 0
   target: {fileID: 1428778908}
 --- !u!4 &2059256062
 Transform:
