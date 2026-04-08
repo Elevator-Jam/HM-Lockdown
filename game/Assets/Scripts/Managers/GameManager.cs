@@ -43,8 +43,10 @@ public class GameManager : SingletonConstructor<GameManager>
 
     public enum GameState
     {
+        not_started, //game is in the main menu
         preparation,
         survival,
+        paused,
         lose,
         win
     }
@@ -62,6 +64,11 @@ public class GameManager : SingletonConstructor<GameManager>
     {
         switch (gameState)
         {
+            case GameState.not_started: // game is in the main menu
+                uiManager.SwitchToMainMenu();
+                Time.timeScale = 0;
+                break;
+
             case GameState.preparation:
                 currentWave++;
                 SetTimer(preparationTimeInMinutes, preparationTimeInSeconds);
@@ -75,13 +82,19 @@ public class GameManager : SingletonConstructor<GameManager>
                 SetTimer(survivalTimeInMinutes, survivalTimeInSeconds);
                 spawnRoutine = StartCoroutine(EntityManager.Instance.SpawnCooldown());
                 break;
+                
+            case GameState.paused:
+                Debug.Log("Game paused");
+                Time.timeScale = 0;
+                //uiManager.SwitchToPauseMenu();
+                break;
 
             case GameState.lose:
                 Debug.Log("Game lost");
                 // Pause game
                 Time.timeScale = 0;
                 // Display post game menu
-                uiManager.SwitchToPostGameMenu();
+                uiManager.SwitchToPostGameMenu(false);
                 break;
 
             case GameState.win:
@@ -89,13 +102,13 @@ public class GameManager : SingletonConstructor<GameManager>
                 // Pause game
                 Time.timeScale = 0;
                 // Display post game menu
-                uiManager.SwitchToPostGameMenu();
+                uiManager.SwitchToPostGameMenu(true);
                 break;
             default:
                 break;
         }
 
-        Debug.Log(gameState);
+        //Debug.Log(gameState);
 
     }
 
@@ -134,20 +147,45 @@ public class GameManager : SingletonConstructor<GameManager>
         return currentWave;
     }
 
+    public void StartGame()
+    {
+        gameState = GameState.preparation;
+        Time.timeScale = 1;
+        Debug.LogWarning("startgame");
+    }
+
     public void PauseGame()
     {
-        Debug.LogWarning("function not yet implemented");
+        gameState = GameState.paused;
+        Debug.LogWarning("pausegame");
     }
 
     public void UnpauseGame()
     {
-        Debug.LogWarning("function not yet implemented");
+        gameState = GameState.survival;
+        Debug.LogWarning("unpause game");
     }
 
     public void RestartGame()
     {
-        Debug.LogWarning("function not yet implemented");
+        Debug.LogWarning("restartgame");
     }
+
+    public void EndGame()
+    {
+        gameState = GameState.lose;
+        Debug.LogWarning("endgame");
+    }
+
+    public void ExitGame()
+    {
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+        #endif
+    }
+
 
     private void Start()
     {
