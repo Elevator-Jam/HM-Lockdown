@@ -14,10 +14,6 @@ public class BaseFiring : MonoBehaviour, IFire
         GameObject bullet = Instantiate(bulletPrefab, firepoint.position, firepoint.rotation);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
-        // Set the bullet prefab material color to a random color.
-        Material bulletMat = bullet.GetComponent<Renderer>().material;
-        bulletMat.color = Random.ColorHSV(0, 1, 0.5f, 1, 0.75f, 1);
-
         if (rb != null)
         {
             rb.AddForce(firepoint.right * bulletSpeed, ForceMode2D.Impulse);
