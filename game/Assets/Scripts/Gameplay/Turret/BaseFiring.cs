@@ -1,24 +1,31 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 public class BaseFiring : MonoBehaviour, IFire
 {
+    [SerializeField] private static int currFirepointIdx = 0;
     [SerializeField] GameObject bulletPrefab;
-    [SerializeField] Transform firepoint;
+    [SerializeField] Transform[] firepoints;
     [SerializeField] float bulletSpeed;
     [SerializeField] int bulletCount;
     [SerializeField] float bulletDelayAmount;
     [SerializeField] int cooldownInSeconds;
     public void Fire()
     {
-        GameObject bullet = Instantiate(bulletPrefab, firepoint.position, firepoint.rotation);
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        if (firepoints.Count() > currFirepointIdx){
+            Transform firepoint = firepoints[currFirepointIdx];
+            Debug.Log($"rotation: {firepoint.rotation}");
+            GameObject bullet = Instantiate(bulletPrefab, firepoint.position, firepoint.rotation);
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
-        if (rb != null)
-        {
-            rb.AddForce(firepoint.right * bulletSpeed, ForceMode2D.Impulse);
+            if (rb != null)
+            {
+                Debug.Log($"right: {firepoint.right}");
+                rb.AddForce(firepoint.right * bulletSpeed, ForceMode2D.Impulse);
+            }
+            Destroy(bullet, 3f);
         }
-        Destroy(bullet, 3f);
     }
     IEnumerator BulletDelay()
     {
@@ -40,5 +47,11 @@ public class BaseFiring : MonoBehaviour, IFire
             yield return new WaitForSeconds(cooldownInSeconds);
             StartCoroutine(BulletDelay());
         }
+    }
+
+    public static void SetFirePointIdx(int idx)
+    {
+        currFirepointIdx = idx;
+        Debug.Log($"currFirepointIdx: {currFirepointIdx}");
     }
 }

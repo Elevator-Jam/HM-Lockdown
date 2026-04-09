@@ -19,7 +19,8 @@ public class BaseTurret : MonoBehaviour
     {
         if(target != null)
         {
-        rotateScript.Rotate(target.transform);
+            rotateScript.Rotate(target.transform);
+            //fireScript.SetFirepointIdx();
         }
     }
 

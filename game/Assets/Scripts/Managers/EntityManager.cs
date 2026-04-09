@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using UnityEngine.Rendering.Universal;
-using Unity.Android.Gradle.Manifest;
 
 public class EntityManager : SingletonConstructor<EntityManager>
 {
