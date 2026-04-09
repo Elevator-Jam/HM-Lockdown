@@ -463,6 +463,7 @@ MonoBehaviour:
   - {fileID: 7660915777350064375}
   - {fileID: 6692456097964030918}
   - {fileID: 7834247363909488987}
+  firepoint: {fileID: 762150950940723921}
   bulletSpeed: 10
   bulletCount: 3
   bulletDelayAmount: 0.125
