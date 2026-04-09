@@ -8,5 +8,5 @@ interface IRotate
     /// <param name="target">the game object to rotate towards</param>
     /// <returns> Nothing </returns>
     /// <remarks>Note: needs a target to rotate towards </remarks>
-    void Rotate(Transform target);
+    void Rotate(Vector3 targetPosition);
 }

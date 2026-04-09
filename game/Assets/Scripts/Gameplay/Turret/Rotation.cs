@@ -9,14 +9,9 @@ public class Rotation : MonoBehaviour, IRotate
     [SerializeField] 
     private SpriteRenderer[] spriteRenderers;
 
-    public void Rotate(Transform target)
+    public void Rotate(Vector3 targetPosition)
     {
-        if(target == null)
-        {
-            return;
-        }
-
-        Vector3 directionToTarget = target.position - fireAxis.position;
+        Vector3 directionToTarget = targetPosition - fireAxis.position;
 
         float angleInRadians = Mathf.Atan2(directionToTarget.y, directionToTarget.x);
         float angleInDegrees = angleInRadians * Mathf.Rad2Deg;
@@ -30,26 +25,31 @@ public class Rotation : MonoBehaviour, IRotate
     }
     private void ShowTurretBasedOnAngle(float angleInDegrees)
     {
-        int turrAnimIdx = 0;
-        if (angleInDegrees < 0f && angleInDegrees >= -20f)
+        float angle = angleInDegrees;
+        if (angle < 0) 
         {
-            turrAnimIdx = 0;
-            
-        } else if (angleInDegrees < -20f && angleInDegrees >= -80f)
-        {
-            turrAnimIdx = 1;
-        } else if (angleInDegrees < -80f && angleInDegrees >= -100f)
-        {
-            turrAnimIdx = 2;
-
-        } else if (angleInDegrees < -100f && angleInDegrees >= -140f)
-        {
-            turrAnimIdx = 3;
-
-        } else if (angleInDegrees < -140f && angleInDegrees >= -180f)
-        {
-            turrAnimIdx = 4;
+            angle += 360;
         }
+
+        int turrAnimIdx = 4; // Default to "Left" (covers 90 to 220 degrees)
+
+        if (angle < 90 || angle >= 340) 
+        {
+                turrAnimIdx = 0; // Top-Right + Bottom-Right Start
+        }
+        else if (angle >= 280) 
+        {
+            turrAnimIdx = 1;          // Bottom-Right Diagonal
+        }
+        else if (angle >= 260) 
+        {
+            turrAnimIdx = 2;          // Center Bottom
+        }
+        else if (angle >= 220) 
+        {
+            turrAnimIdx = 3;          // Bottom-Left Diagonal
+        }
+
         BaseFiring.SetFirePointIdx(turrAnimIdx);
         for (int i = 0; i < spriteRenderers.Count(); ++i)
         {

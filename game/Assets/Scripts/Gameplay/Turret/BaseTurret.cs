@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 
 public class BaseTurret : MonoBehaviour
 {
+    [SerializeField] bool isPlayerControlled = false;
     [SerializeField] List<Transform> visibleTargets = new List<Transform>();
     [SerializeField] GameObject target;
     IRotate rotateScript;
@@ -17,10 +19,18 @@ public class BaseTurret : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(target != null)
+        if (isPlayerControlled)
         {
-            rotateScript.Rotate(target.transform);
-            //fireScript.SetFirepointIdx();
+            if (Pointer.current != null)
+            {
+                Vector2 screenPos = Pointer.current.position.ReadValue();
+                Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 10f)); // Assuming 10f depth for 2D
+                rotateScript.Rotate(worldPos);
+            }
+        }
+        else if (target != null)
+        {
+            rotateScript.Rotate(target.transform.position);
         }
     }
 
