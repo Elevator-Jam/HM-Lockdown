@@ -93,7 +93,7 @@ public class UIManager : SingletonConstructor<UIManager>
     {
         if (!panels.ContainsKey(panelID))
         {
-            UnityEngine.Debug.LogWarning($"Panel {panelID} not found.");
+            Debug.LogWarning($"Panel {panelID} not found.");
             return;
         }
         UIPanel panel = panels[panelID];

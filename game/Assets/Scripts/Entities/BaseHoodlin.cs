@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 public class BaseHoodlin : MonoBehaviour, IEntity
 {
+    private static int cnt = 0;
+    [SerializeField] private int id;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] GameObject scrapPrefab;
     [SerializeField] Transform target;
@@ -10,10 +12,25 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     [SerializeField] int damage = 5;
     [SerializeField] float speed = 5f;
     [SerializeField] int attackCooldownInSeconds;
+    [SerializeField] float rockDuration = 0.1f;
+    [SerializeField] float rotationAngle = 20f;
     bool canAttack = false;
+
+    private Quaternion backRotL, forwardRotL, backRotR, forwardRotR;
+    private Quaternion neutralRot;
+
     void Start()
     {
+        id = cnt;
+        cnt++;
         rb2D = this.gameObject.GetComponent<Rigidbody2D>();
+        
+        // Precalculate rotations once at the very beginning
+        neutralRot = transform.rotation;
+        backRotL = neutralRot * Quaternion.Euler(0, 0, -rotationAngle);
+        forwardRotL = neutralRot * Quaternion.Euler(0, 0, rotationAngle);
+        backRotR = neutralRot * Quaternion.Euler(0, 0, rotationAngle);
+        forwardRotR = neutralRot * Quaternion.Euler(0, 0, -rotationAngle);
     }
 
     // Update is called once per frame
@@ -29,6 +46,8 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     public void DropScrap()
     {
         Instantiate(scrapPrefab, transform.position, Quaternion.identity);
+        //todo add the ability to be clicked onclicked the scrap gets picked up
+        //todo add coroutine to pickup prefab automatically after 10 s and add to energy
     }
     public void Move()
     {
@@ -46,8 +65,46 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     {
         while (canAttack)
         {
-            yield return new WaitForSeconds(attackCooldownInSeconds);
+            float elapsed = 0f;
+            bool targetOnLeft = target.position.x < transform.position.x;
+            Quaternion backwardRot = targetOnLeft ? backRotL : backRotR;
+            Quaternion forwardRot = targetOnLeft ? forwardRotL : forwardRotR;
+
+            // Step 1: Rock backwards (Charge up)
+            while (elapsed < rockDuration)
+            {
+                transform.rotation = Quaternion.Lerp(neutralRot, backwardRot, elapsed / rockDuration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            transform.rotation = backwardRot;
+
+            // Step 2: Swing all the way forward (The Strike)
+            elapsed = 0f;
+            while (elapsed < rockDuration)
+            {
+                transform.rotation = Quaternion.Lerp(backwardRot, forwardRot, elapsed / rockDuration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            transform.rotation = forwardRot;
+
+            // Deal damage precisely when fully leaned in!
             Attack();
+
+            // Step 3: Return to original (Neutral)
+            elapsed = 0f;
+            while (elapsed < rockDuration)
+            {
+                transform.rotation = Quaternion.Lerp(forwardRot, neutralRot, elapsed / rockDuration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            transform.rotation = neutralRot;
+
+            // Wait the remaining cooldown time before the next attack
+            float remainingCooldown = Mathf.Max(0f, attackCooldownInSeconds - (rockDuration * 3));
+            yield return new WaitForSeconds(remainingCooldown);
         }
     }
     public void TakeDamage(int amount)

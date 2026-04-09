@@ -5368,6 +5368,14 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1428778908}
+    - target: {fileID: 8984023259076325761, guid: d52bf1bee21fc3a4ba6dc5ada8b94bc2, type: 3}
+      propertyPath: rockDuration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8984023259076325761, guid: d52bf1bee21fc3a4ba6dc5ada8b94bc2, type: 3}
+      propertyPath: prepareRotationAngle
+      value: 40
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

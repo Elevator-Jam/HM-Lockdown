@@ -107,9 +107,6 @@ public class GameManager : SingletonConstructor<GameManager>
             default:
                 break;
         }
-
-        //Debug.Log(gameState);
-
     }
 
     void ChangeState()

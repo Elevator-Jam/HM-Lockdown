@@ -19,12 +19,14 @@ public class Rotation : MonoBehaviour, IRotate
         Vector3 directionToTarget = target.position - fireAxis.position;
 
         float angleInRadians = Mathf.Atan2(directionToTarget.y, directionToTarget.x);
-        Debug.Log($"angle rads: {angleInRadians}");
         float angleInDegrees = angleInRadians * Mathf.Rad2Deg;
-        Debug.Log($"angle: {angleInDegrees}");
-        //Quaternion targetRotation = Quaternion.Euler(0f, 0f, angleInDegrees);
-        //fireAxis.rotation = Quaternion.RotateTowards(fireAxis.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
-        ShowTurretBasedOnAngle(angleInDegrees);
+
+        if (spriteRenderers.Count() == 0) {
+            Quaternion targetRotation = Quaternion.Euler(0f, 0f, angleInDegrees);
+            fireAxis.rotation = Quaternion.RotateTowards(fireAxis.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
+        } else {
+            ShowTurretBasedOnAngle(angleInDegrees);
+        }
     }
     private void ShowTurretBasedOnAngle(float angleInDegrees)
     {
