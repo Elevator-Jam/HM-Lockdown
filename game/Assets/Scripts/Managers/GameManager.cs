@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 public class GameManager : SingletonConstructor<GameManager>
 {
     private void Awake()
@@ -52,7 +54,9 @@ public class GameManager : SingletonConstructor<GameManager>
     }
 
     [Header("Game State")]
+    private GameState previousGameState;
     [SerializeField] public GameState gameState;
+    
     /// Function: SetState
     /// <summary>
     /// Purpose: Sets the state based on the current situation of the game
@@ -70,6 +74,7 @@ public class GameManager : SingletonConstructor<GameManager>
                 break;
 
             case GameState.preparation:
+                Time.timeScale = 1;
                 currentWave++;
                 SetTimer(preparationTimeInMinutes, preparationTimeInSeconds);
                 if (spawnRoutine != null)
@@ -79,29 +84,27 @@ public class GameManager : SingletonConstructor<GameManager>
                 break;
 
             case GameState.survival:
+                Time.timeScale = 1;
                 SetTimer(survivalTimeInMinutes, survivalTimeInSeconds);
                 spawnRoutine = StartCoroutine(EntityManager.Instance.SpawnCooldown());
                 break;
                 
             case GameState.paused:
-                Debug.Log("Game paused");
                 Time.timeScale = 0;
-                //uiManager.SwitchToPauseMenu();
+                uiManager.SwitchToPauseMenu();
                 break;
 
             case GameState.lose:
-                Debug.Log("Game lost");
                 // Pause game
                 Time.timeScale = 0;
-                // Display post game menu
+                // Display post game menu lost
                 uiManager.SwitchToPostGameMenu(false);
                 break;
 
             case GameState.win:
-                Debug.Log("Game won");
                 // Pause game
                 Time.timeScale = 0;
-                // Display post game menu
+                // Display post game menu win
                 uiManager.SwitchToPostGameMenu(true);
                 break;
             default:
@@ -113,7 +116,7 @@ public class GameManager : SingletonConstructor<GameManager>
     {
         switch (gameState)
         {
-            // Change game state to surviavl phase
+            // Change game state to survival phase
             // Set background to "day"
             case GameState.preparation:
                 gameState = GameState.survival;
@@ -147,39 +150,58 @@ public class GameManager : SingletonConstructor<GameManager>
     public void StartGame()
     {
         gameState = GameState.preparation;
-        Time.timeScale = 1;
-        Debug.LogWarning("startgame");
+        currentWave = 0;
+        SetState();
     }
 
     public void PauseGame()
     {
+        if (gameState == GameState.paused)
+        {
+            return;
+        }
+        previousGameState = gameState;
         gameState = GameState.paused;
-        Debug.LogWarning("pausegame");
+        SetState();
     }
 
     public void UnpauseGame()
     {
-        gameState = GameState.survival;
-        Debug.LogWarning("unpause game");
+        uiManager.CloseTopUI();
+        if (gameState != GameState.paused) 
+        {
+            return;
+        }
+        gameState = previousGameState;
+        SetState();
     }
 
     public void RestartGame()
     {
-        Debug.LogWarning("restartgame");
+        Time.timeScale = 1;
+
+        // Stop all local coroutines (like spawnRoutine) before reload
+        StopAllCoroutines();
+
+        // Reset persistent static variables
+        BaseHoodlin.ResetStatics();
+        BaseFiring.ResetStatics();
+
+        // Reload the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void EndGame()
     {
         gameState = GameState.lose;
-        Debug.LogWarning("endgame");
     }
 
     public void ExitGame()
     {
         #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+            UnityEditor.EditorApplication.isPlaying = false;
         #else
-        Application.Quit();
+            Application.Quit();
         #endif
     }
 
@@ -191,6 +213,25 @@ public class GameManager : SingletonConstructor<GameManager>
 
     private void Update()
     {
+        if (Keyboard.current != null && 
+            Keyboard.current.escapeKey.wasPressedThisFrame) //pause/unpause game using escape key
+        {
+            if (gameState == GameState.paused) 
+            {
+                UnpauseGame();
+            } 
+            else if (gameState == GameState.survival || 
+                    gameState == GameState.preparation) 
+            {
+                PauseGame();
+            }
+        }
+
+        if (gameState == GameState.paused) 
+        {
+            return;
+        }
+
         if (currentTimer < 0)
         {
             // Continue changing states if win/loss state is not active
@@ -202,7 +243,6 @@ public class GameManager : SingletonConstructor<GameManager>
 
         currentTimer -= Time.deltaTime;
         timerSlider.value = currentTimer;
-        
     }
 }
 

@@ -5,6 +5,10 @@ using System.Linq;
 public class BaseFiring : MonoBehaviour, IFire
 {
     [SerializeField] private static int currFirepointIdx = 0;
+    public static void ResetStatics()
+    {
+        currFirepointIdx = 0;
+    }
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Transform[] firepoints;
 

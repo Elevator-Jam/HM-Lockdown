@@ -13,6 +13,7 @@ public class SingletonConstructor<TT> : MonoBehaviour
     /// <param name="baseScript">takes the child script</param>
     /// <returns> Nothing </returns>
     /// <remarks>Note: use this as the parent class and add the child class in between the <> symbols </remarks>
+    [SerializeField] bool dontDestroyOnLoad = false;
     public void ConstructSingleton(TT baseScript)
     {
         gameObject.tag = _tag;
@@ -21,7 +22,18 @@ public class SingletonConstructor<TT> : MonoBehaviour
         else
             _instance = baseScript;
 
-        DontDestroyOnLoad(gameObject);
+        if (dontDestroyOnLoad)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    protected virtual void OnDestroy()
+    {
+        if (_instance != null && AreEqual(_instance, this.GetComponent<TT>()))
+        {
+            _instance = default(TT);
+        }
     }
     /// Function: AreEqual
     /// <summary>
