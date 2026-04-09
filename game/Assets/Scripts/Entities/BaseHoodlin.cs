@@ -3,10 +3,6 @@ using System.Collections;
 public class BaseHoodlin : MonoBehaviour, IEntity
 {
     private static int cnt = 0;
-    public static void ResetStatics()
-    {
-        cnt = 0;
-    }
     [SerializeField] private int id;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] GameObject scrapPrefab;
@@ -22,6 +18,11 @@ public class BaseHoodlin : MonoBehaviour, IEntity
 
     private Quaternion backRotL, forwardRotL, backRotR, forwardRotR;
     private Quaternion neutralRot;
+
+    public static void ResetStatics()
+    {
+        cnt = 0;
+    }
 
     void Start()
     {

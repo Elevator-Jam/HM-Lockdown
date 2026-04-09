@@ -2105,6 +2105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   _tag: UIManager
+  dontDestroyOnLoad: 0
   allPanels:
   - {fileID: 291733648}
   - {fileID: 1792556492}
@@ -3162,6 +3163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingManager
   _tag: BuildingManager
+  dontDestroyOnLoad: 0
   turretSelected: {fileID: 0}
   turretValue: 0
   socketDisplay: {fileID: 1843246589}
@@ -10643,6 +10645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   _tag: GameManager
+  dontDestroyOnLoad: 0
   uiManager: {fileID: 304741398}
   entityManager: {fileID: 2059256061}
   timerSlider: {fileID: 803475234}
@@ -11004,6 +11007,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurrencyManager
   _tag: CurrencyManager
+  dontDestroyOnLoad: 0
   _totalScraps: 100
   scrapText: {fileID: 1113743051}
   reset: 0
@@ -11924,6 +11928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   _tag: AbilityManager
+  dontDestroyOnLoad: 0
   selectedAbility: 
 --- !u!4 &1767667039
 Transform:
@@ -12095,7 +12100,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.5999756, y: 0.15002441}
+  m_AnchoredPosition: {x: 2.6000977, y: 0.15002441}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1792556490
@@ -13163,6 +13168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EntityManager
   _tag: EntityManager
+  dontDestroyOnLoad: 0
   WaveSpawn:
   - EntityList:
     - {fileID: 5133537878273999508, guid: d52bf1bee21fc3a4ba6dc5ada8b94bc2, type: 3}
@@ -13404,6 +13410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthManager
   _tag: HealthManager
+  dontDestroyOnLoad: 0
   MAX_HEALTH: 100
   currentHealth: 0
   healthSlider: {fileID: 289965930}
@@ -13881,6 +13888,10 @@ PrefabInstance:
       value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 3180171746420007290, guid: 065ac4acb33714c9cac7a84287d78f08, type: 3}
+      propertyPath: isManual
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3180171746420007290, guid: 065ac4acb33714c9cac7a84287d78f08, type: 3}
       propertyPath: currFirepointIdx
       value: 0
       objectReference: {fileID: 0}
@@ -13908,6 +13919,10 @@ PrefabInstance:
       propertyPath: 'firepoints.Array.data[4]'
       value: 
       objectReference: {fileID: 1416064122}
+    - target: {fileID: 4768373469214787596, guid: 065ac4acb33714c9cac7a84287d78f08, type: 3}
+      propertyPath: isPlayerControlled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5580305223856917057, guid: 065ac4acb33714c9cac7a84287d78f08, type: 3}
       propertyPath: m_Enabled
       value: 1

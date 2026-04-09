@@ -1,14 +1,13 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 public class BaseFiring : MonoBehaviour, IFire
 {
+    [SerializeField] bool isManual = false;
     [SerializeField] private static int currFirepointIdx = 0;
-    public static void ResetStatics()
-    {
-        currFirepointIdx = 0;
-    }
+    
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Transform[] firepoints;
 
@@ -17,32 +16,86 @@ public class BaseFiring : MonoBehaviour, IFire
     [SerializeField] int bulletCount;
     [SerializeField] float bulletDelayAmount;
     [SerializeField] int cooldownInSeconds;
-    public void Fire()
+
+    private float lastFireTime = 0f;
+
+    public static void ResetStatics()
+    {
+        currFirepointIdx = 0;
+    }
+    public void Fire(Vector3? targetPosition = null)
     {
         if (firepoints.Count() > currFirepointIdx){
             firepoint = firepoints[currFirepointIdx];
         }
-        GameObject bullet = Instantiate(bulletPrefab, firepoint.position, firepoint.rotation);
+
+        Vector2 direction;
+        Quaternion bulletRotation;
+
+        if (targetPosition.HasValue)
+        {
+            // Calculate direction precisely towards the finger/mouse
+            direction = (Vector2)(targetPosition.Value - firepoint.position).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            bulletRotation = Quaternion.Euler(0, 0, angle);
+        }
+        else
+        {
+            // Use turret's current rotation for auto-aim
+            direction = firepoint.right;
+            bulletRotation = firepoint.rotation;
+        }
+
+        GameObject bullet = Instantiate(bulletPrefab, firepoint.position, bulletRotation);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
         if (rb != null)
         {
-            rb.AddForce(firepoint.right * bulletSpeed, ForceMode2D.Impulse);
+            rb.AddForce(direction * bulletSpeed, ForceMode2D.Impulse);
         }
         Destroy(bullet, 3f);
-        
     }
+
     IEnumerator BulletDelay()
     {
         for (int i = 0; i < bulletCount; i++)
         {
             yield return new WaitForSeconds(bulletDelayAmount);
-            Fire();
+
+            if (isManual && Pointer.current != null)
+            {
+                // Capture exact finger position for THIS bullet in the burst
+                Vector2 screenPos = Pointer.current.position.ReadValue();
+                Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 10f));
+                Fire(worldPos);
+            }
+            else
+            {
+                Fire();
+            }
         }
     }
     void Start()
     {
-        StartCoroutine(Cooldown());
+        if (!isManual)
+        {
+            StartCoroutine(Cooldown());
+        }
+    }
+
+    private void Update()
+    {
+        if (isManual && GameManager.Instance.gameState != GameManager.GameState.paused)
+        {
+            if (Pointer.current != null && Pointer.current.press.isPressed)
+            {
+                if (Time.time >= lastFireTime + cooldownInSeconds)
+                {
+                    StartCoroutine(BulletDelay());
+                    lastFireTime = Time.time;
+                }
+            }
+        }
     }
 
     IEnumerator Cooldown()
