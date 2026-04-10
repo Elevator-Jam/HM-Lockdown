@@ -37,6 +37,24 @@ public class BuildSocket : MonoBehaviour
         return true;
     }
 
+    [SerializeField] Color normalColor = Color.white;
+    [SerializeField] Color highlightColor = Color.green;
+    private SpriteRenderer spriteRenderer;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null) spriteRenderer.color = normalColor;
+    }
+
+    public void SetHighlight(bool isHighlighted)
+    {
+        if (spriteRenderer != null && !isOccupied)
+        {
+            spriteRenderer.color = isHighlighted ? highlightColor : normalColor;
+        }
+    }
+
     public void Occupy()
     {
         GameObject selectedTurret = BuildingManager.Instance.GetTurretSelected();
@@ -46,8 +64,8 @@ public class BuildSocket : MonoBehaviour
         {
             CurrencyManager.Instance.SubtractScrap(cost);
             Instantiate(selectedTurret, transform.position, Quaternion.identity);
-            this.gameObject.SetActive(false);
             isOccupied = true;
+            this.gameObject.SetActive(false);
         }
     }
 
