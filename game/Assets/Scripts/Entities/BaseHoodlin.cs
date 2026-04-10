@@ -51,8 +51,6 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     public void DropScrap()
     {
         Instantiate(scrapPrefab, transform.position, Quaternion.identity);
-        //todo add the ability to be clicked onclicked the scrap gets picked up
-        //todo add coroutine to pickup prefab automatically after 10 s and add to energy
     }
     public void Move()
     {
