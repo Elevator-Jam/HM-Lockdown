@@ -6,29 +6,48 @@ public class BuildSocket : MonoBehaviour
     [SerializeField] GameObject OccupiedBy;
     [SerializeField] string acceptedTag;
 
-    bool CanAccept(GameObject placeable)
+    bool CanAccept(GameObject placeable, int cost)
     {
-        if (isOccupied)
+        if (isOccupied) 
         {
+            Debug.Log("[BuildSocket] Build failed: Socket is already occupied.");
             return false;
         }
-        if(CurrencyManager.Instance.GetScrap() < 0)
-        if (placeable.tag != acceptedTag || placeable == null)
+
+        if (placeable == null)
         {
+            Debug.Log("[BuildSocket] Build failed: No turret selected.");
             return false;
         }
+
+        if (placeable.tag != acceptedTag)
+        {
+            Debug.Log($"[BuildSocket] Build failed: Tag mismatch. Prefab tag: {placeable.tag}, Expected: {acceptedTag}");
+            return false;
+        }
+        
+        // Check if player has enough scrap
+        int currentScrap = CurrencyManager.Instance.GetScrap();
+        if (currentScrap < cost)
+        {
+            Debug.Log($"[BuildSocket] Build failed: Not enough scrap. Have: {currentScrap}, Need: {cost}");
+            return false;
+        }
+
         return true;
     }
 
     public void Occupy()
     {
-        if(CanAccept(BuildingManager.Instance.GetTurretSelected()))
+        GameObject selectedTurret = BuildingManager.Instance.GetTurretSelected();
+        int cost = BuildingManager.Instance.GetTurretValue();
+
+        if(CanAccept(selectedTurret, cost))
         {
-            GameObject turret = BuildingManager.Instance.GetTurretSelected();
-            int value = BuildingManager.Instance.GetTurretValue();
-            CurrencyManager.Instance.SubtractScrap(value);
-            Instantiate(turret, transform.position, Quaternion.identity);
+            CurrencyManager.Instance.SubtractScrap(cost);
+            Instantiate(selectedTurret, transform.position, Quaternion.identity);
             this.gameObject.SetActive(false);
+            isOccupied = true;
         }
     }
 

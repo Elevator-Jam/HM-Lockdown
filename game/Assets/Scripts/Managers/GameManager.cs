@@ -185,7 +185,6 @@ public class GameManager : SingletonConstructor<GameManager>
 
         // Reset persistent static variables
         BaseHoodlin.ResetStatics();
-        BaseFiring.ResetStatics();
 
         // Reload the current scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

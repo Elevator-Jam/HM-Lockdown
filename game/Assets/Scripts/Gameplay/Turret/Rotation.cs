@@ -8,6 +8,12 @@ public class Rotation : MonoBehaviour, IRotate
 
     [SerializeField] 
     private SpriteRenderer[] spriteRenderers;
+    private BaseFiring fireScript;
+
+    private void Start()
+    {
+        fireScript = GetComponent<BaseFiring>();
+    }
 
     public void Rotate(Vector3 targetPosition)
     {
@@ -35,7 +41,7 @@ public class Rotation : MonoBehaviour, IRotate
 
         if (angle < 90 || angle >= 340) 
         {
-                turrAnimIdx = 0; // Top-Right + Bottom-Right Start
+            turrAnimIdx = 0; // Top-Right + Bottom-Right Start
         }
         else if (angle >= 280) 
         {
@@ -50,7 +56,10 @@ public class Rotation : MonoBehaviour, IRotate
             turrAnimIdx = 3;          // Bottom-Left Diagonal
         }
 
-        BaseFiring.SetFirePointIdx(turrAnimIdx);
+        if (fireScript != null) 
+        {
+            fireScript.SetFirePointIdx(turrAnimIdx);
+        }
         for (int i = 0; i < spriteRenderers.Count(); ++i)
         {
             if (i == turrAnimIdx)
