@@ -55,6 +55,12 @@ public class BuildSocket : MonoBehaviour
         }
     }
 
+    public void Release()
+    {
+        isOccupied = false;
+        this.gameObject.SetActive(true);
+    }
+
     public void Occupy()
     {
         GameObject selectedTurret = BuildingManager.Instance.GetTurretSelected();
@@ -63,7 +69,15 @@ public class BuildSocket : MonoBehaviour
         if(CanAccept(selectedTurret, cost))
         {
             CurrencyManager.Instance.SubtractScrap(cost);
-            Instantiate(selectedTurret, transform.position, Quaternion.identity);
+            GameObject turretInstance = Instantiate(selectedTurret, transform.position, Quaternion.identity);
+            
+            // Link the turret to this socket so it can release it when destroyed
+            BaseTurret turretScript = turretInstance.GetComponent<BaseTurret>();
+            if (turretScript != null)
+            {
+                turretScript.SetParentSocket(this);
+            }
+
             isOccupied = true;
             this.gameObject.SetActive(false);
         }
