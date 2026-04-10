@@ -140,23 +140,33 @@ public class AspectRatioController : MonoBehaviour
 
     public void ApplyAspectRatio()
     {
-        if (topBar == null || bottomBar == null) return;
+        if (topBar == null || bottomBar == null || cam == null) return;
 
         float windowAspect = (float)Screen.width / (float)Screen.height;
         float scaleHeight = windowAspect / targetAspect;
 
         ResetBar(topBar); ResetBar(bottomBar); ResetBar(leftBar); ResetBar(rightBar);
 
-        if (scaleHeight < 1.0f) 
+        if (scaleHeight < 1.0f) // Letterbox (Bars on Top/Bottom)
         {
             float barHeight = (1.0f - scaleHeight) / 2.0f;
+            
+            // Fix the Camera Viewport
+            cam.rect = new Rect(0, barHeight, 1.0f, scaleHeight);
+
+            // Set the Black Bars
             SetAnchor(topBar, new Vector2(0, 1 - barHeight), new Vector2(1, 1));
             SetAnchor(bottomBar, Vector2.zero, new Vector2(1, barHeight));
         }
-        else 
+        else // Pillarbox (Bars on Left/Right)
         {
             float scaleWidth = 1.0f / scaleHeight;
             float barWidth = (1.0f - scaleWidth) / 2.0f;
+
+            // Fix the Camera Viewport
+            cam.rect = new Rect(barWidth, 0, scaleWidth, 1.0f);
+
+            // Set the Black Bars
             SetAnchor(leftBar, Vector2.zero, new Vector2(barWidth, 1));
             SetAnchor(rightBar, new Vector2(1 - barWidth, 0), Vector2.one);
         }
