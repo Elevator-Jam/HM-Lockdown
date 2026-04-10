@@ -22,7 +22,6 @@ public class SelectTurret : MonoBehaviour
 
     public void OnClick()
     {
-        Debug.Log("calling select turret. onclick");
         // If we click the same button again, deselect it
         if (currentSelection == this)
         {
