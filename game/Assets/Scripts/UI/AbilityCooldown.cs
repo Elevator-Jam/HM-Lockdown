@@ -11,8 +11,8 @@ public class AbilityCooldown : MonoBehaviour
 
     [Header("UI References")]
     [SerializeField] private Image cooldownOverlay;
-    [SerializeField] private Color startColor = Color.red;
-    [SerializeField] private Color readyColor = Color.white;
+    [SerializeField] private Color startColor = new Color(0.2f, 0.2f, 0.2f, 0.8f); // Subtle dark gray
+    [SerializeField] private Color readyColor = Color.white; // Full color state
 
     private Button abilityButton;
     private bool isOnCooldown = false;
