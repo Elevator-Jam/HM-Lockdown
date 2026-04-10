@@ -45,11 +45,9 @@ public class BaseFiring : MonoBehaviour, IFire
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                 bulletRotation = Quaternion.Euler(0, 0, angle);
             }
-            else
+            else //no target no firing
             {
-                //Debug.Log($"Target not found. transform.position: {transform.position}");
-                direction = Mathf.Sign(transform.position.x) * firepoint.right;
-                bulletRotation = firepoint.rotation;
+                return;
             }
         }
 
