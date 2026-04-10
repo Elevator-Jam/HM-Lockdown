@@ -18,7 +18,8 @@ public class BaseTurret : MonoBehaviour
     private Side turretSide = Side.Both;
     [SerializeField] 
     List<Transform> visibleTargets = new List<Transform>();
-    [SerializeField] GameObject target;
+    [SerializeField] 
+    GameObject target;
     
     private Transform houseTransform;
     IRotate rotateScript;
