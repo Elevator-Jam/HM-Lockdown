@@ -40,13 +40,15 @@ public class BaseFiring : MonoBehaviour, IFire
             BaseTurret turret = GetComponentInParent<BaseTurret>();
             if (turret != null && turret.GetCurrentTarget() != null)
             {
+                //Debug.Log($"Target found. Target position: {turret.GetCurrentTarget().transform.position}");
                 direction = (Vector2)(turret.GetCurrentTarget().transform.position - firepoint.position).normalized;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                 bulletRotation = Quaternion.Euler(0, 0, angle);
             }
             else
             {
-                direction = firepoint.right;
+                //Debug.Log($"Target not found. transform.position: {transform.position}");
+                direction = Mathf.Sign(transform.position.x) * firepoint.right;
                 bulletRotation = firepoint.rotation;
             }
         }
