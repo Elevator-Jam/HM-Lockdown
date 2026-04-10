@@ -422,6 +422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da42340b20b01aa4480811c2f2060bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseTurret
+  isPlayerControlled: 0
   visibleTargets: []
   target: {fileID: 0}
 --- !u!114 &1064936400362322343
@@ -456,6 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d43cef264392cf4086ab40a4aaa8f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseFiring
+  isManual: 0
   bulletPrefab: {fileID: 4712024537760037117, guid: 743695facf59f484699362a0cf09abcc, type: 3}
   firepoints:
   - {fileID: 762150950940723921}
@@ -467,7 +469,7 @@ MonoBehaviour:
   bulletSpeed: 10
   bulletCount: 3
   bulletDelayAmount: 0.125
-  cooldownInSeconds: 2
+  cooldownInSeconds: 1
 --- !u!1 &2006025454830918830
 GameObject:
   m_ObjectHideFlags: 0
