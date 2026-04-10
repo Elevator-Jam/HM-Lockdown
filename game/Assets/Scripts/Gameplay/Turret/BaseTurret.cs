@@ -24,8 +24,19 @@ public class BaseTurret : MonoBehaviour
     private Transform houseTransform;
     IRotate rotateScript;
 
+    [Header("Lifespan Settings")]
+    [SerializeField] 
+    private float turretLifetime = 15f;
+    private BuildSocket parentSocket;
+
     void Start()
     {
+        // Auto-destruct after set lifetime only for automatic turrets
+        if (!isPlayerControlled)
+        {
+            Destroy(gameObject, turretLifetime);
+        }
+
         rotateScript = this.gameObject.GetComponent<IRotate>();
         
         // Find the House to use as the center line (Pivot: X=0)
@@ -158,6 +169,19 @@ public class BaseTurret : MonoBehaviour
         if (target == null)
         {
             target = newTarget;
+        }
+    }
+
+    public void SetParentSocket(BuildSocket socket)
+    {
+        parentSocket = socket;
+    }
+
+    private void OnDestroy()
+    {
+        if (parentSocket != null)
+        {
+            parentSocket.Release();
         }
     }
 }
