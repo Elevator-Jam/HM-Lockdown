@@ -39,15 +39,15 @@ This style guide outlines the coding standards and conventions for C# developmen
   ```
 
 ### 1.3 Fields & Variables
-* **Serialized Fields**: Use `camelCase` (prefixed with `_` if private).
+* **Serialized Fields**: Use `camelCase`.
   ```csharp
   [SerializeField]
-  private int _scrapValue = 10;
+  private int scrapValue = 10;
   ```
-* **Private / Protected Fields**: Use `_camelCase` with a leading underscore.
+* **Private / Protected Fields**: Use `camelCase` with a leading underscore.
   ```csharp
-  private Vector3 _startPos;
-  private Collider2D _myCollider;
+  private Vector3 startPos;
+  private Collider2D myCollider;
   ```
 * **Local Variables**: Use `camelCase`.
   ```csharp
@@ -79,7 +79,7 @@ This style guide outlines the coding standards and conventions for C# developmen
   ```csharp
   // Correct
   void Start() {
-      if (_isPlayerControlled) {
+      if (isPlayerControlled) {
           InitializeController();
       }
   }
@@ -112,11 +112,11 @@ This style guide outlines the coding standards and conventions for C# developmen
   ```csharp
   // Correct
   [SerializeField]
-  private float _turretLifetime = 15f;
+  private float turretLifetime = 15f;
 
   [Header("Lifespan Settings")]
   [SerializeField]
-  private float _customDuration = 10f;
+  private float customDuration = 10f;
 
   // Incorrect (DO NOT USE)
   [SerializeField] float turretLifetime = 15f;
@@ -127,11 +127,11 @@ This style guide outlines the coding standards and conventions for C# developmen
   ```csharp
   // Correct
   [SerializeField]
-  private int _damage = 5;
+  private int damage = 5;
 
   // Incorrect
   [SerializeField]
-  int _damage = 5;
+  int damage = 5;
   ```
 
 ---
