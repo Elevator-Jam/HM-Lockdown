@@ -23,10 +23,10 @@ Use this checklist to ensure every feature follows the established **Agile & Age
 - [ ] **Visual Evidence:** Screenshots or video recordings captured for the PR.
 
 ## 4. Review & Merge (Closing)
-- [ ] **Pull Request:** Created from feature branch to `Development`.
-- [ ] **Peer Review:** At least 1 person has thoroughly reviewed and approved the code.
+- [ ] **Pull Request:** Created from feature branch to `main`.
+- [ ] **Peer Review:** At least 1 person has thoroughly reviewed and approved the code (LGTM). Or 2 people has glanced through the PR and given a +1 each.
 - [ ] **Review Iterations:** All feedback addressed and confirmed by the reviewer.
-- [ ] **Merge:** Feature branch merged into `Development` after approval.
+- [ ] **Merge:** Feature branch merged into `main` after approval.
 
 ## 5. Retrospective (Post-Sprint)
 - [ ] **Retro Meeting:** Team discussed what went well and what can be improved.
