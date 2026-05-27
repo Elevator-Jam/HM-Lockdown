@@ -34,7 +34,15 @@ Features are divided among participants (Designers, Artists, Tech Artists, Engin
 *   **Designers:** Provide UI mocks and layouts.
 *   **Tech Artists:** Act as the bridge, integrating assets and UI directly into Unity. If only mocks are available, placeholders are used to unblock Engineering.
 
+
+### 2.4 Daily Standup
+A short daily meeting to synchronize the team. Each participant answers:
+*   **What did I do yesterday?**
+*   **What am I planning to do today?**
+*   **Are there any blockers?** (Anything preventing you from completing your task?)
+
 ---
+
 
 ## 3. Validation & Quality Assurance
 ### 3.1 Multi-Disciplinary Testing

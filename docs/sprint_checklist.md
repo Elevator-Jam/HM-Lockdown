@@ -15,7 +15,7 @@ Use this checklist to ensure every feature follows the established **Agile & Age
 - [ ] **Pair Programming:** Collaboration sessions held (human-to-human or human-to-agent).
 - [ ] **Style Compliance:** Code strictly adheres to `code_style_guide.md` (Braces, Naming, Headers).
 - [ ] **Asset Integration:** Engineers or Tech Artists have integrated assets/UI or working mocks into Unity.
-
+- [ ] **Daily Standup:** Team synchronizes on progress, plans, and blockers every day.
 ## 3. Integration & Validation (Near End)
 - [ ] **Play Mode Test:** Feature verified in Unity Editor; no errors or logic bugs.
 - [ ] **Platform Build:** Successful build made and tested on target hardware (iOS/Android/PC).
