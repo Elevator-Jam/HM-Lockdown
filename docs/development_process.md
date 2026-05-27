@@ -50,7 +50,7 @@ Capture the feature in action via **videos or screenshots or builds** to provide
 
 ## 4. Code Review & Merge Process
 ### 4.1 Pull Requests (PR)
-*   Create a PR from the feature branch to the `Development` branch.
+*   Create a PR from the feature branch to the `main` branch.
 *   Include the FDD link, testing evidence (videos/screenshots), and any known issues.
 
 ### 4.2 Review Protocol
