@@ -44,7 +44,7 @@ This style guide outlines the coding standards and conventions for C# developmen
   [SerializeField]
   private int scrapValue = 10;
   ```
-* **Private / Protected Fields**: Use `camelCase` with a leading underscore.
+* **Private / Protected Fields**: Use `camelCase`.
   ```csharp
   private Vector3 startPos;
   private Collider2D myCollider;
