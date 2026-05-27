@@ -2,19 +2,35 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - Entity
+  - EntityManager
+  - House
+  - UIManager
+  - GameManager
+  - HealthManager
+  - BuildingManager
+  - Turret
+  - CurrencyManager
+  - SpellLocationLeft
+  - SpellLocationRight
+  - AbilityManager
+  - SpellEntity
+  - Ground
+  - Win_Panel
+  - Lose_Panel
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Payloads
+  - Enemy
+  - Bullets
+  - Detection
   - 
   - 
   - 
@@ -41,3 +57,5 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  m_RenderingLayers:
+  - Default
