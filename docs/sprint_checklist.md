@@ -1,5 +1,9 @@
 # Sprint Checklist - [Sprint Name/Number]
 
+**Version:** 1.0.0  
+**Created:** 2026-05-27  
+**Last Updated:** 2026-05-27  
+
 Use this checklist to ensure every feature follows the established **Agile & Agentic Engineering** process.
 
 ---

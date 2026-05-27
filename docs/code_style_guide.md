@@ -1,5 +1,9 @@
 # C# Code Style Guide - HM Lockdown
 
+**Version:** 1.0.0  
+**Created:** 2026-05-27  
+**Last Updated:** 2026-05-27  
+
 This style guide outlines the coding standards and conventions for C# development in the **HM Lockdown** project. Adhering to these standards ensures the codebase remains readable, maintainable, and consistent.
 
 ---

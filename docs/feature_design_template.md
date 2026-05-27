@@ -1,5 +1,9 @@
 # Feature Design Document: [Feature Name]
 
+**Version:** 1.0.0  
+**Created:** 2026-05-27  
+**Last Updated:** 2026-05-27  
+
 **Status:** Draft / Review / Approved  
 **Author:** [Your Name]  
 **Date:** [YYYY-MM-DD]  
