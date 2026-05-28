@@ -1,5 +1,9 @@
 # Agile Development & Agentic Engineering Process - HM Lockdown
 
+**Version:** 1.0.0  
+**Created:** 2026-05-27  
+**Last Updated:** 2026-05-27  
+
 This document outlines the end-to-end workflow for feature development in the **HM Lockdown** project, integrating traditional Agile methodologies with **Agentic Engineering** principles.
 
 ---
