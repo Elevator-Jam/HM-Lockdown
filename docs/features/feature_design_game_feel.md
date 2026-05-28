@@ -65,6 +65,10 @@ This feature is mostly engineering-focused.
 *   **New Classes:**
     * `GameFeelManager` - Singleton to handle full-screen effects, e.g. screenshakes
         * **Inheritance:** `SingletonConstructor<GameFeelManager>`
+    * `PauseManager` - Singleton that manages the Time.timeScale value.  Handles both manual game pauses and hit-pauses.
+        * **Inheritance:** `SingletonConstructor<PauseManager>`
+    * `PoolManager` - Singleton that manages a dictionary of prefab to their pools, using Unity's pool tool.
+        * **Inheritance:** `SingletonConstructor<PoolManager>`
     * `GameFeelEvent` - defines an array of `GameFeelAction` to run.
         * **Inheritance:** `ScriptableObject`
         * **Methods:**
@@ -79,10 +83,6 @@ This feature is mostly engineering-focused.
         * Derived classes are expected to have a list of argument keys that are required for the action to run.
     * `WaitForSecondsAction` - coroutine that delays the next set of actions by a certain duration
         * **Inheritance:** `GameFeelAction`
-    * `PauseManager` - Singleton that manages the Time.timeScale value.  Handles both manual game pauses and hit-pauses.
-        * **Inheritance:** `SingletonConstructor<PauseManager>`
-    * `PoolManager` - Singleton that manages a dictionary of prefab to their pools, using Unity's pool tool.
-        * **Inheritance:** `SingletonConstructor<PoolManager>`
 
 ### 3.2 Key Methods & Logic
 Outline the critical logic paths.
@@ -137,7 +137,8 @@ TBD
 
 ## 7. Open Questions / Risks
 *   Are there any technical unknowns?
+    * Will we be using message busses to define and trigger events, soon?
+    * What are the arguments that we should implement?
     * How should the actions be implemented?  A simple list of actions that are ran sequentially?  Through Visual Scripting graph?
-    * What are the arguments that we should implement to
 *   Potential performance impacts (e.g., high GC allocation, physics overhead)?
     * slightly higher GC allocation
