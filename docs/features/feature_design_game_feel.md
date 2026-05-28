@@ -35,6 +35,13 @@ The list of potential game-feel-related actions that can be triggered are collab
     * Time scale manager (to prevent hit-pause vs manual game pause conflicts)
 *   **Out-of-Scope:**
     * Other global trigger/actions
+    * List of `GameFeelEvents`, including but not limited to:
+        * `OnTurretFire`
+        * `OnProjectileHit`
+        * `OnEnemyDamaged`
+        * `OnEnemyDeath`
+        * `OnBaseDamaged`
+        * `OnStateChanged`
 
 ---
 
