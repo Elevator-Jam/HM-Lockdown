@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using VContainer;
+using VContainer.Unity;
+
 public class BaseHoodlin : MonoBehaviour, IEntity
 {
     private static int cnt = 0;
@@ -18,6 +21,13 @@ public class BaseHoodlin : MonoBehaviour, IEntity
 
     private Quaternion backRotL, forwardRotL, backRotR, forwardRotR;
     private Quaternion neutralRot;
+    private IObjectResolver _container;
+
+    [Inject]
+    public void Construct(IObjectResolver container)
+    {
+        _container = container;
+    }
 
     public static void ResetStatics()
     {
@@ -50,7 +60,14 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     }
     public void DropScrap()
     {
-        Instantiate(scrapPrefab, transform.position, Quaternion.identity);
+        if (_container != null)
+        {
+            _container.Instantiate(scrapPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(scrapPrefab, transform.position, Quaternion.identity);
+        }
     }
     public void Move()
     {

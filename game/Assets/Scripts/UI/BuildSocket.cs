@@ -1,10 +1,19 @@
 using UnityEngine;
+using VContainer;
 
 public class BuildSocket : MonoBehaviour
 {
     [SerializeField] bool isOccupied;
     [SerializeField] GameObject OccupiedBy;
     [SerializeField] string acceptedTag;
+
+    private CurrencyManager _currencyManager;
+
+    [Inject]
+    public void Construct(CurrencyManager currencyManager)
+    {
+        _currencyManager = currencyManager;
+    }
 
     bool CanAccept(GameObject placeable, int cost)
     {
@@ -27,7 +36,8 @@ public class BuildSocket : MonoBehaviour
         }
         
         // Check if player has enough scrap
-        int currentScrap = CurrencyManager.Instance.GetScrap();
+        var manager = _currencyManager ?? CurrencyManager.Instance;
+        int currentScrap = manager != null ? manager.GetScrap() : 0;
         if (currentScrap < cost)
         {
             Debug.Log($"[BuildSocket] Build failed: Not enough scrap. Have: {currentScrap}, Need: {cost}");
@@ -68,7 +78,11 @@ public class BuildSocket : MonoBehaviour
 
         if(CanAccept(selectedTurret, cost))
         {
-            CurrencyManager.Instance.SubtractScrap(cost);
+            var manager = _currencyManager ?? CurrencyManager.Instance;
+            if (manager != null)
+            {
+                manager.SubtractScrap(cost);
+            }
             GameObject turretInstance = Instantiate(selectedTurret, transform.position, Quaternion.identity);
             
             // Link the turret to this socket so it can release it when destroyed

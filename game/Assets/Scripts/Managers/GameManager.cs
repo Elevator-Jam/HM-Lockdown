@@ -4,6 +4,7 @@ using System.Collections;
 using System;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+
 public class GameManager : SingletonConstructor<GameManager>
 {
     private void Awake()
@@ -244,4 +245,3 @@ public class GameManager : SingletonConstructor<GameManager>
         timerSlider.value = currentTimer;
     }
 }
-

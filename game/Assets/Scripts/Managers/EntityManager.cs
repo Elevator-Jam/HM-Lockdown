@@ -1,9 +1,19 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using VContainer;
+using VContainer.Unity;
 
 public class EntityManager : SingletonConstructor<EntityManager>
 {
+    private IObjectResolver _container;
+
+    [Inject]
+    public void Construct(IObjectResolver container)
+    {
+        _container = container;
+    }
+
     private void Awake()
     {
         ConstructSingleton(this); // ! DO NOT DELETE
@@ -70,7 +80,17 @@ public class EntityManager : SingletonConstructor<EntityManager>
         {
             int entitySelected = Random.Range(0, WaveSpawn[currentWave].EntityList.Count);
             Transform pointeSelected = SetSpawnpoint();
-            GameObject entity = Instantiate(WaveSpawn[currentWave].EntityList[entitySelected], pointeSelected.position, Quaternion.identity);
+            
+            GameObject entity;
+            if (_container != null)
+            {
+                entity = _container.Instantiate(WaveSpawn[currentWave].EntityList[entitySelected], pointeSelected.position, Quaternion.identity);
+            }
+            else
+            {
+                entity = Instantiate(WaveSpawn[currentWave].EntityList[entitySelected], pointeSelected.position, Quaternion.identity);
+            }
+
             entity.GetComponent<IEntity>().SetTarget(target);
 
             if (entity.transform.position.x < 0)
