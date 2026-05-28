@@ -66,6 +66,8 @@ This feature is mostly engineering-focused.
         * Derived classes are expected to have a list of argument keys that are required for the action to run.
     * `WaitForSecondsAction` - coroutine that delays the next set of actions by a certain duration
         * **Inheritance:** `GameFeelAction`
+    * `PauseManager` - Singleton that manages the Time.timeScale value.  Handles both manual game pauses and hit-pauses.
+        * **Inheritance:** `SingletonConstructor<PauseManager>`
 
 ### 3.2 Key Methods & Logic
 Outline the critical logic paths.
