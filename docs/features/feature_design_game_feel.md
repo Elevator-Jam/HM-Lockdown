@@ -62,7 +62,7 @@ This feature is mostly engineering-focused.
         * **Inheritance:** `ScriptableObject`
     * `GameFeelArgs` - a dictionary of arguments for `GameFeelEvent` to process
         * Also contains `source` and `target` GameObjects indicating what triggered the event.
-    * `GameFeelAction` - interface with `IEnumerator Invoke(GameFeelArgs args)` method.
+    * `GameFeelAction` - interface or abstract class (whichever Unity can render on the inspector editor) with `IEnumerator Invoke(GameFeelArgs args)` method.
         * Derived classes are expected to have a list of argument keys that are required for the action to run.
     * `WaitForSecondsAction` - coroutine that delays the next set of actions by a certain duration
         * **Inheritance:** `GameFeelAction`
