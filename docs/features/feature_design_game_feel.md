@@ -65,11 +65,17 @@ This feature is mostly engineering-focused.
 *   **New Classes:**
     * `GameFeelManager` - Singleton to handle full-screen effects, e.g. screenshakes
         * **Inheritance:** `SingletonConstructor<GameFeelManager>`
-    * `GameFeelEvent` - defines an array of `GameFeelAction` to run, and a `IEnumerator Invoke(GameFeelArgs args)` method to run said actions sequentially.
+    * `GameFeelEvent` - defines an array of `GameFeelAction` to run.
         * **Inheritance:** `ScriptableObject`
+        * **Methods:**
+            * `IEnumerator Invoke(GameFeelArgs args)` - method to run array of actions sequentially.
+            * `void AddRequiredArg<ArgType>(string argName)` - method for `GameFeelAction` to specify the list of arguments it expects.  Largely used for debugging, and potentially even for editor preview.
     * `GameFeelArgs` - a dictionary of arguments for `GameFeelEvent` to process
         * Also contains `source` and `target` GameObjects indicating what triggered the event.
-    * `GameFeelAction` - interface or abstract class (whichever Unity can render on the inspector editor) with `IEnumerator Invoke(GameFeelArgs args)` method.
+    * `GameFeelAction` - interface or abstract class (whichever Unity can render on the inspector editor) that executes a game feel action.
+        * **Abstract Methods:**
+            * `IEnumerator Invoke(GameFeelArgs args)` - performs the action.
+            * `void AddArgs(GameFeelEvent event)` - populates event with the required arguments.
         * Derived classes are expected to have a list of argument keys that are required for the action to run.
     * `WaitForSecondsAction` - coroutine that delays the next set of actions by a certain duration
         * **Inheritance:** `GameFeelAction`
