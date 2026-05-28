@@ -68,6 +68,8 @@ This feature is mostly engineering-focused.
         * **Inheritance:** `GameFeelAction`
     * `PauseManager` - Singleton that manages the Time.timeScale value.  Handles both manual game pauses and hit-pauses.
         * **Inheritance:** `SingletonConstructor<PauseManager>`
+    * `PoolManager` - Singleton that manages a dictionary of prefab to their pools, using Unity's pool tool.
+        * **Inheritance:** `SingletonConstructor<PoolManager>`
 
 ### 3.2 Key Methods & Logic
 Outline the critical logic paths.
