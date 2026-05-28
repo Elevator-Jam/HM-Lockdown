@@ -32,6 +32,7 @@ The list of potential game-feel-related actions that can be triggered are collab
         * play one-time sound effect
         * hit-pause effect
         * activate animator's trigger
+    * Time scale manager (to prevent hit-pause vs manual game pause conflicts)
 *   **Out-of-Scope:**
     * Other global trigger/actions
 
@@ -54,19 +55,17 @@ This feature is mostly engineering-focused.
 
 ## 3. Technical Implementation
 ### 3.1 Architecture & Class Design
-To be determined, based on the list of requirements from game designers.  Below assumes the game designers desire using the Visual Scripting package to trigger game-feel events
 *   **New Classes:**
     * `GameFeelManager` - Singleton to handle full-screen effects, e.g. screenshakes
         * **Inheritance:** `SingletonConstructor<GameFeelManager>`
-    * `GameFeelEvent` - defines a game feel event to trigger, as well as arguments to feed into the triggers.
+    * `GameFeelEvent` - defines an array of `GameFeelAction` to run, and a `IEnumerator Invoke(GameFeelArgs args)` method to run said actions sequentially.
         * **Inheritance:** `ScriptableObject`
     * `GameFeelArgs` - a dictionary of arguments for `GameFeelEvent` to process
-    * `GameFeelEventUnit` - custom Visual Scripting event node triggered by `GameFeelEvent`.  Always a coroutine
-        * **Inheritance:** `EventUnit<GameFeelArgs>`
-    * `GameFeelUnit` - abstract Visual Scripting node that defines a specific game feel action
-        * **Inheritance:** `Unit`
-    * `WaitForSecondsUnit` - coroutine Visual Scripting node that delays the next action by a certain duration
-        * **Inheritance:** `Unit`
+        * Also contains `source` and `target` GameObjects indicating what triggered the event.
+    * `GameFeelAction` - interface with `IEnumerator Invoke(GameFeelArgs args)` method.
+        * Derived classes are expected to have a list of argument keys that are required for the action to run.
+    * `WaitForSecondsAction` - coroutine that delays the next set of actions by a certain duration
+        * **Inheritance:** `GameFeelAction`
 
 ### 3.2 Key Methods & Logic
 Outline the critical logic paths.
@@ -85,7 +84,8 @@ public void PlayDamageEffect() {
 ```
 
 ### 3.3 Dependencies & Integrations
-*   **Existing Systems:** TBD
+*   **Existing Systems:**
+    * `AudioManager` - when or if sound effect prefabs are generated, to make sure the audio manager is made aware of it
 *   **External Assets:** TBD
 
 ---
