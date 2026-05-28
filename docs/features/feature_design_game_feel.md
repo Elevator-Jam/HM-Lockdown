@@ -23,8 +23,6 @@ The list of potential game-feel-related actions that can be triggered are collab
 ### 1.2 Scope
 *   **In-Scope:**
     * `ScriptableObjects` that serves as defining the event
-        * Maybe add editor for defining arguments to the event?
-    * Editor preview of the game feel actions
     * List of game feel actions, including:
         * positional screen-shake
         * rotational screen-shake
@@ -34,6 +32,7 @@ The list of potential game-feel-related actions that can be triggered are collab
         * activate animator's trigger
     * Time scale manager (to prevent hit-pause vs manual game pause conflicts)
 *   **Out-of-Scope:**
+    * Editor preview of the game feel actions
     * Other global trigger/actions
     * List of `GameFeelEvents`, including but not limited to:
         * `OnTurretFire`
