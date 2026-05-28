@@ -31,6 +31,7 @@ The list of potential game-feel-related actions that can be triggered are collab
         * hit-pause effect
         * activate animator's trigger
     * Time scale manager (to prevent hit-pause vs manual game pause conflicts)
+    * Pool manager (to manage spawned sound and particle effects)
 *   **Out-of-Scope:**
     * Editor preview of the game feel actions
     * Other global trigger/actions
