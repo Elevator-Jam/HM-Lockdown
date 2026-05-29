@@ -1,14 +1,14 @@
-using System.Collections;
 using HM.Lockdown.GameFeel;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.UIElements;
+using static Codice.CM.WorkspaceServer.WorkspaceTreeDataStore;
 
 namespace HM.Lockdown.Editor.GameFeel {
     [CustomEditor(typeof(GameFeelEvent))]
     [CanEditMultipleObjects]
     public class GameFeelEventEditor : UnityEditor.Editor {
+        private static readonly Vector2 margin = new(16, 2);
         SerializedProperty testProp;
         ReorderableList testGui;
 
@@ -30,10 +30,14 @@ namespace HM.Lockdown.Editor.GameFeel {
                 drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) => {
                     // Retrieve the array element
                     SerializedProperty newProp = testProp.GetArrayElementAtIndex(index);
+                    GUIContent label = EditorGUI.BeginProperty(rect, new GUIContent(newProp.displayName), newProp);
 
-                    // neato
+                    // Setup rect
+                    rect.x += margin.x;
+                    rect.width -= margin.x;
+                    rect.y += margin.y;
                     rect.height = EditorGUIUtility.singleLineHeight;
-                    EditorGUI.PropertyField(rect, newProp, true);
+                    bool foldOut = EditorGUI.BeginFoldoutHeaderGroup(rect, true, label);
 
                     // Neato
                     if (newProp.objectReferenceValue == null) {
@@ -45,16 +49,46 @@ namespace HM.Lockdown.Editor.GameFeel {
                     SerializedObject toEdit = editor.serializedObject;
                     toEdit.Update();
 
+                    // Skip the first scriptable object argument
                     SerializedProperty iterator = toEdit.GetIterator();
                     iterator.NextVisible(true);
+
+                    // Setup rect
+                    rect.y += EditorGUIUtility.singleLineHeight;
+
+                    // Draw all fields
                     while (iterator.NextVisible(true)) {
-                        rect.y += EditorGUIUtility.singleLineHeight;
                         EditorGUI.PropertyField(rect, iterator);
+                        rect.y += EditorGUIUtility.singleLineHeight + margin.y;
                     }
 
                     if (GUI.changed) {
                         toEdit.ApplyModifiedProperties();
                     }
+                    EditorGUI.EndFoldoutHeaderGroup();
+                    EditorGUI.EndProperty();
+                },
+                elementHeightCallback = (int index) => {
+                    // Retrieve the array element
+                    float toReturn = EditorGUIUtility.singleLineHeight;
+                    SerializedProperty newProp = testProp.GetArrayElementAtIndex(index);
+
+                    // Neato
+                    if (newProp.objectReferenceValue == null) {
+                        return toReturn;
+                    }
+
+                    // Neato
+                    UnityEditor.Editor editor = CreateEditor(newProp.objectReferenceValue);
+                    SerializedObject toEdit = editor.serializedObject;
+                    toEdit.Update();
+
+                    SerializedProperty iterator = toEdit.GetIterator();
+                    iterator.NextVisible(true);
+                    while (iterator.NextVisible(true)) {
+                        toReturn += EditorGUIUtility.singleLineHeight + margin.y;
+                    }
+                    return toReturn;
                 }
             };
         }
