@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
+using VContainer;
+using VContainer.Unity;
 
 public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -18,11 +19,27 @@ public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private Image buttonImage;
     private GameObject ghostInstance;
     private BuildSocket currentHoveredSocket;
+    private BuildingManager _buildingManager;
+    private IObjectResolver _container;
 
-    private void Awake()
+    private void Awake() {
+        // Ask the root scope to inject into this object
+        // Assuming your LifetimeScope is in the scene, it's accessible globally
+        var scope = Object.FindAnyObjectByType<GameLifetimeScope>();
+        if (scope != null) {
+            scope.Container.Inject(this);
+        }
+    }
+
+    [Inject]
+    public void Construct(BuildingManager buildingManager, IObjectResolver container)
     {
+        _buildingManager = buildingManager;
+        _container = container;
         buttonImage = GetComponent<Image>();
-        if (buttonImage != null) buttonImage.color = normalColor;
+        if (buttonImage != null) {
+            buttonImage.color = normalColor;
+        }
     }
 
     public void OnClick()
@@ -32,12 +49,17 @@ public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     private void SelectThisTurret()
     {
+        var manager = _buildingManager;
+
         // If we click the same button again, deselect it
         if (currentSelection == this)
         {
             Deselect();
-            BuildingManager.Instance.SetTurretSelected(null);
-            BuildingManager.Instance.SetTurretValue(0);
+            if (manager != null)
+            {
+                manager.SetTurretSelected(null);
+                manager.SetTurretValue(0);
+            }
             return;
         }
 
@@ -49,11 +71,17 @@ public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         // Select this button
         currentSelection = this;
-        if (buttonImage != null) buttonImage.color = selectedColor;
+        if (buttonImage != null) {
+            buttonImage.color = selectedColor;
+        }
 
-        BuildingManager.Instance.SetTurretSelected(turretPrefab);
-        BuildingManager.Instance.SetTurretValue(turretValue);
+        if (manager != null)
+        {
+            manager.SetTurretSelected(turretPrefab);
+            manager.SetTurretValue(turretValue);
+        }
     }
+
 
     public void Deselect()
     {
@@ -70,7 +98,14 @@ public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         if (turretPrefab != null)
         {
-            ghostInstance = Instantiate(turretPrefab);
+            if (_container != null)
+            {
+                ghostInstance = _container.Instantiate(turretPrefab);
+            }
+            else
+            {
+                ghostInstance = Instantiate(turretPrefab);
+            }
             SetupGhost(ghostInstance);
             UpdateGhostPosition();
         }

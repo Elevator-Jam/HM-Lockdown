@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
+using VContainer;
+using VContainer.Unity;
 
-public class BaseFiring : MonoBehaviour, IFire
+public class BaseFiring : MonoBehaviour, IFire, IStartable
 {
     [SerializeField] bool isManual = false;
     [SerializeField] private int currFirepointIdx = 0;
@@ -19,6 +20,24 @@ public class BaseFiring : MonoBehaviour, IFire
     [SerializeField] float cooldownInSeconds;
 
     private float lastFireTime = 0f;
+    private GameManager _gameManager;
+    private IObjectResolver _container;
+
+    private void Awake() {
+        // Ask the root scope to inject into this object
+        // Assuming your LifetimeScope is in the scene, it's accessible globally
+        var scope = Object.FindAnyObjectByType<GameLifetimeScope>();
+        if (scope != null) {
+            scope.Container.Inject(this);
+        }
+    }
+
+    [Inject]
+    public void Construct(GameManager gameManager, IObjectResolver container)
+    {
+        _gameManager = gameManager;
+        _container = container;
+    }
 
     public void Fire(Vector3? targetPosition = null)
     {
@@ -40,7 +59,6 @@ public class BaseFiring : MonoBehaviour, IFire
             BaseTurret turret = GetComponentInParent<BaseTurret>();
             if (turret != null && turret.GetCurrentTarget() != null)
             {
-                //Debug.Log($"Target found. Target position: {turret.GetCurrentTarget().transform.position}");
                 direction = (Vector2)(turret.GetCurrentTarget().transform.position - firepoint.position).normalized;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                 bulletRotation = Quaternion.Euler(0, 0, angle);
@@ -51,7 +69,16 @@ public class BaseFiring : MonoBehaviour, IFire
             }
         }
 
-        GameObject bullet = Instantiate(bulletPrefab, firepoint.position, bulletRotation);
+        GameObject bullet;
+        if (_container != null)
+        {
+            bullet = _container.Instantiate(bulletPrefab, firepoint.position, bulletRotation);
+        }
+        else
+        {
+            bullet = Instantiate(bulletPrefab, firepoint.position, bulletRotation);
+        }
+        
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
         if (rb != null)
@@ -80,7 +107,7 @@ public class BaseFiring : MonoBehaviour, IFire
         }
     }
 
-    void Start()
+    public void Start()
     {
         if (!isManual)
         {
@@ -90,7 +117,8 @@ public class BaseFiring : MonoBehaviour, IFire
 
     private void Update()
     {
-        if (isManual && GameManager.Instance.gameState != GameManager.GameState.paused)
+        var manager = _gameManager;
+        if (isManual && manager != null && manager.gameState != GameManager.GameState.paused)
         {
             if (Pointer.current != null && Pointer.current.press.isPressed)
             {

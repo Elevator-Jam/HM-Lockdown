@@ -1,15 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
-public class HealthManager : SingletonConstructor<HealthManager>
+using VContainer;
+
+public class HealthManager : MonoBehaviour
 {
-    private void Awake()
-    {
-        ConstructSingleton(this); // ! DO NOT DELETE
-    }
     [SerializeField] int MAX_HEALTH;
     [SerializeField] int currentHealth;
     [SerializeField] Slider healthSlider;
-    [SerializeField] GameManager gameManager;
+    
+    private GameManager _gameManager;
+
+    [Inject]
+    public void Construct(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -45,8 +50,12 @@ public class HealthManager : SingletonConstructor<HealthManager>
         {
             currentHealth = 0;
             // call lose sequence here
-            gameManager.gameState = GameManager.GameState.lose;
-            gameManager.SetState();
+            var manager = _gameManager;
+            if (manager != null)
+            {
+                manager.gameState = GameManager.GameState.lose;
+                manager.SetState();
+            }
         }
         healthSlider.value = currentHealth;
     }

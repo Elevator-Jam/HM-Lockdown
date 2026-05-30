@@ -1,5 +1,6 @@
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 public class BuildSocket : MonoBehaviour
 {
@@ -8,11 +9,28 @@ public class BuildSocket : MonoBehaviour
     [SerializeField] string acceptedTag;
 
     private CurrencyManager _currencyManager;
+    private BuildingManager _buildingManager;
+    private IObjectResolver _container;
+
+    private void Awake() {
+        // Ask the root scope to inject into this object
+        // Assuming your LifetimeScope is in the scene, it's accessible globally
+        var scope = Object.FindAnyObjectByType<GameLifetimeScope>();
+        if (scope != null) {
+            scope.Container.Inject(this);
+        }
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null) {
+            spriteRenderer.color = normalColor;
+        }
+    }
 
     [Inject]
-    public void Construct(CurrencyManager currencyManager)
+    public void Construct(CurrencyManager currencyManager, BuildingManager buildingManager, IObjectResolver container)
     {
         _currencyManager = currencyManager;
+        _buildingManager = buildingManager;
+        _container = container;
     }
 
     bool CanAccept(GameObject placeable, int cost)
@@ -36,7 +54,7 @@ public class BuildSocket : MonoBehaviour
         }
         
         // Check if player has enough scrap
-        var manager = _currencyManager ?? CurrencyManager.Instance;
+        var manager = _currencyManager;
         int currentScrap = manager != null ? manager.GetScrap() : 0;
         if (currentScrap < cost)
         {
@@ -51,11 +69,6 @@ public class BuildSocket : MonoBehaviour
     [SerializeField] Color highlightColor = Color.green;
     private SpriteRenderer spriteRenderer;
 
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null) spriteRenderer.color = normalColor;
-    }
 
     public void SetHighlight(bool isHighlighted)
     {
@@ -73,17 +86,27 @@ public class BuildSocket : MonoBehaviour
 
     public void Occupy()
     {
-        GameObject selectedTurret = BuildingManager.Instance.GetTurretSelected();
-        int cost = BuildingManager.Instance.GetTurretValue();
+        var buildManager = _buildingManager;
+        GameObject selectedTurret = buildManager != null ? buildManager.GetTurretSelected() : null;
+        int cost = buildManager != null ? buildManager.GetTurretValue() : 0;
 
         if(CanAccept(selectedTurret, cost))
         {
-            var manager = _currencyManager ?? CurrencyManager.Instance;
-            if (manager != null)
+            var currencyManager = _currencyManager;
+            if (currencyManager != null)
             {
-                manager.SubtractScrap(cost);
+                currencyManager.SubtractScrap(cost);
             }
-            GameObject turretInstance = Instantiate(selectedTurret, transform.position, Quaternion.identity);
+            
+            GameObject turretInstance;
+            if (_container != null)
+            {
+                turretInstance = _container.Instantiate(selectedTurret, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                turretInstance = Instantiate(selectedTurret, transform.position, Quaternion.identity);
+            }
             
             // Link the turret to this socket so it can release it when destroyed
             BaseTurret turretScript = turretInstance.GetComponent<BaseTurret>();

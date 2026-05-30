@@ -1,8 +1,18 @@
 using UnityEngine;
 using System.Collections;
+using VContainer;
+using VContainer.Unity;
 
 public class AirStrike : MonoBehaviour, IAbility
 {
+    private IObjectResolver _container;
+
+    [Inject]
+    public void Construct(IObjectResolver container)
+    {
+        _container = container;
+    }
+    
     GameObject[] spellLocationsLeft;
     GameObject[] spellLocationsRight;
     void Start()
@@ -68,8 +78,17 @@ public class AirStrike : MonoBehaviour, IAbility
         {
             // Spawn a payload at each spell location
             // Spawn in one payload on each side
-            GameObject payloadL = Instantiate(airstrikePayload);
-            GameObject payloadR = Instantiate(airstrikePayload);
+            GameObject payloadL, payloadR;
+            if (_container != null)
+            {
+                payloadL = _container.Instantiate(airstrikePayload);
+                payloadR = _container.Instantiate(airstrikePayload);
+            }
+            else
+            {
+                payloadL = Instantiate(airstrikePayload);
+                payloadR = Instantiate(airstrikePayload);
+            }
 
             // Set the position of the payloads above spell locations
             // First 3 wave should always start next to house and roll outwards

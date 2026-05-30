@@ -50,12 +50,7 @@ public class Scrap : MonoBehaviour
 
     public void Collect()
     {
-        var manager = _currencyManager ?? CurrencyManager.Instance;
-        if (manager != null)
-        {
-            manager.AddScrap(scrapValue);
-        }
-
+        _currencyManager.AddScrap(scrapValue);
         Destroy(gameObject);
     }
 }

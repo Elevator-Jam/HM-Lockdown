@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using VContainer;
 using VContainer.Unity;
 
-public class EntityManager : SingletonConstructor<EntityManager>
+public class EntityManager : MonoBehaviour
 {
     private IObjectResolver _container;
 
@@ -12,11 +12,6 @@ public class EntityManager : SingletonConstructor<EntityManager>
     public void Construct(IObjectResolver container)
     {
         _container = container;
-    }
-
-    private void Awake()
-    {
-        ConstructSingleton(this); // ! DO NOT DELETE
     }
 
     // TODO: Create an optimized Object pool

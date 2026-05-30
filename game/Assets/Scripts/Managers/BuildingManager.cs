@@ -1,13 +1,15 @@
 using UnityEngine;
+using VContainer;
 
-public class BuildingManager : SingletonConstructor<BuildingManager>
+public class BuildingManager : MonoBehaviour
 {
     [SerializeField] GameObject turretSelected;
     [SerializeField] int turretValue;
     [SerializeField] GameObject socketDisplay;
-    private void Awake()
+
+    [Inject]
+    public void Construct()
     {
-        ConstructSingleton(this); // ! DO NOT DELETE
     }
 
     public GameObject GetTurretSelected()
@@ -16,6 +18,7 @@ public class BuildingManager : SingletonConstructor<BuildingManager>
     }
     public void SetTurretSelected(GameObject turret)
     {
+        Debug.Log($"[BuildingManager] Setting selected turret to: {(turret != null ? turret.name : "null")}");
         if(turretSelected != turret)
         {
             turretSelected = turret;
@@ -36,6 +39,7 @@ public class BuildingManager : SingletonConstructor<BuildingManager>
     }
     public void SetTurretValue(int value)
     {
+        Debug.Log($"[BuildingManager] Setting turret value to: {value}");
         if(turretSelected == null)
         {
             turretValue = 0;

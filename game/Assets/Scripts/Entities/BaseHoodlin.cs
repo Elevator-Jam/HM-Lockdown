@@ -22,11 +22,13 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     private Quaternion backRotL, forwardRotL, backRotR, forwardRotR;
     private Quaternion neutralRot;
     private IObjectResolver _container;
+    private HealthManager _healthManager;
 
     [Inject]
-    public void Construct(IObjectResolver container)
+    public void Construct(IObjectResolver container, HealthManager healthManager)
     {
         _container = container;
+        _healthManager = healthManager;
     }
 
     public static void ResetStatics()
@@ -78,7 +80,11 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     }
     public void Attack()
     {
-        HealthManager.Instance.TakeDamage(damage);
+        var manager = _healthManager;
+        if (manager != null)
+        {
+            manager.TakeDamage(damage);
+        }
     }
 
     IEnumerator AttackCooldown()

@@ -1,18 +1,16 @@
 using System;
 using UnityEngine;
-using System.Collections;
+using VContainer;
 
-
-public class AbilityManager : SingletonConstructor<AbilityManager>
+public class AbilityManager : MonoBehaviour
 {
     [SerializeField] string selectedAbility;
 
     AirStrike airStrikeInstance;
 
-
-    private void Awake()
+    [Inject]
+    public void Construct()
     {
-        ConstructSingleton(this); // ! DO NOT DELETE
     }
 
     void Start()

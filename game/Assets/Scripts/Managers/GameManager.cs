@@ -4,19 +4,23 @@ using System.Collections;
 using System;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using VContainer;
 
-public class GameManager : SingletonConstructor<GameManager>
+public class GameManager : MonoBehaviour
 {
-    private void Awake()
-    {
-        ConstructSingleton(this); // ! DO NOT DELETE
-    }
-
     [Header("UI Manager")]
-    [SerializeField] UIManager uiManager;
+    private UIManager _uiManager;
 
     [Header("Entity Manager")]
-    [SerializeField] EntityManager entityManager;
+    private EntityManager _entityManager;
+
+    [Inject]
+    public void Construct(UIManager uiManager, EntityManager entityManager)
+    {
+        _uiManager = uiManager;
+        _entityManager = entityManager;
+    }
+
 
     [Header("Game Timer")]
     [SerializeField] Slider timerSlider;
@@ -67,10 +71,13 @@ public class GameManager : SingletonConstructor<GameManager>
     Coroutine spawnRoutine;
     public void SetState()
     {
+        var uiManager = _uiManager;
+        var entityManager = _entityManager;
+
         switch (gameState)
         {
             case GameState.not_started: // game is in the main menu
-                uiManager.SwitchToMainMenu();
+                if (uiManager != null) uiManager.SwitchToMainMenu();
                 Time.timeScale = 0;
                 break;
 
@@ -87,26 +94,26 @@ public class GameManager : SingletonConstructor<GameManager>
             case GameState.survival:
                 Time.timeScale = 1;
                 SetTimer(survivalTimeInMinutes, survivalTimeInSeconds);
-                spawnRoutine = StartCoroutine(EntityManager.Instance.SpawnCooldown());
+                if (entityManager != null) spawnRoutine = StartCoroutine(entityManager.SpawnCooldown());
                 break;
                 
             case GameState.paused:
                 Time.timeScale = 0;
-                uiManager.SwitchToPauseMenu();
+                if (uiManager != null) uiManager.SwitchToPauseMenu();
                 break;
 
             case GameState.lose:
                 // Pause game
                 Time.timeScale = 0;
                 // Display post game menu lost
-                uiManager.SwitchToPostGameMenu(false);
+                if (uiManager != null) uiManager.SwitchToPostGameMenu(false);
                 break;
 
             case GameState.win:
                 // Pause game
                 Time.timeScale = 0;
                 // Display post game menu win
-                uiManager.SwitchToPostGameMenu(true);
+                if (uiManager != null) uiManager.SwitchToPostGameMenu(true);
                 break;
             default:
                 break;
@@ -168,7 +175,8 @@ public class GameManager : SingletonConstructor<GameManager>
 
     public void UnpauseGame()
     {
-        uiManager.CloseTopUI();
+        var uiManager = _uiManager;
+        if (uiManager != null) uiManager.CloseTopUI();
         if (gameState != GameState.paused) 
         {
             return;

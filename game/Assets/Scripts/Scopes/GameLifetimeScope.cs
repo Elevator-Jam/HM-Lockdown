@@ -4,21 +4,57 @@ using UnityEngine;
 
 public class GameLifetimeScope : LifetimeScope
 {
-    [SerializeField] private CurrencyManager currencyManager;
-    [SerializeField] private EntityManager entityManager;
+    [Header("Managers")]
+    [SerializeField]
+    private CurrencyManager currencyManager;
+    [SerializeField]
+    private EntityManager entityManager;
+    [SerializeField]
+    private GameManager gameManager;
+    [SerializeField]
+    private UIManager uiManager;
+    [SerializeField]
+    private HealthManager healthManager;
+    [SerializeField]
+    private AbilityManager abilityManager;
+    [SerializeField]
+    private BuildingManager buildingManager;
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
     protected override void Configure(IContainerBuilder builder)
     {
-        // Register the existing CurrencyManager component from the scene
-        if (currencyManager != null)
-        {
+        // Register Managers
+        if (currencyManager != null) {
             builder.RegisterComponent(currencyManager);
         }
-
-        // Register the existing EntityManager component from the scene
-        if (entityManager != null)
-        {
+        if (entityManager != null) {
             builder.RegisterComponent(entityManager);
         }
+        if (gameManager != null) {
+            builder.RegisterComponent(gameManager);
+        }
+        if (uiManager != null) {
+            builder.RegisterComponent(uiManager);
+        }
+        if (healthManager != null) {
+            builder.RegisterComponent(healthManager);
+        }
+        if (abilityManager != null) {
+            builder.RegisterComponent(abilityManager);
+        }
+        if (buildingManager != null) {
+            builder.RegisterComponent(buildingManager);
+        }
+
+        // Register UI Panels
+        builder.RegisterComponentInHierarchy<MainMenu>();
+        builder.RegisterComponentInHierarchy<PauseMenu>();
+        builder.RegisterComponentInHierarchy<PostGameMenu>();
+        builder.RegisterComponentInHierarchy<SettingsMenu>();
     }
+
 }
