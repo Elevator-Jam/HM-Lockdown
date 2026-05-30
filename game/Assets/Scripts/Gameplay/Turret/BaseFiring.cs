@@ -67,7 +67,6 @@ public class BaseFiring : MonoBehaviour, IFire
         }
 
         GameObject bullet = Instantiate(bulletPrefab, firepoint.position, bulletRotation);
-        
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
         if (rb != null)

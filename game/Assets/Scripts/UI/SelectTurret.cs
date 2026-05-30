@@ -46,7 +46,6 @@ public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     private void SelectThisTurret()
     {
-
         // If we click the same button again, deselect it
         if (currentSelection == this)
         {
