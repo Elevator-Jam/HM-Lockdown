@@ -1,0 +1,18 @@
+{
+    "name": "HM.Lockdown.GameFeel.Editor",
+    "rootNamespace": "HM.Lockdown.GameFeel.Editor",
+    "references": [
+        "GUID:68395ad8a83f2f64fafe0f2edf3d5a45"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
