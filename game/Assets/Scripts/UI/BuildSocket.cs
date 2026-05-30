@@ -99,14 +99,7 @@ public class BuildSocket : MonoBehaviour
             }
             
             GameObject turretInstance;
-            if (_container != null)
-            {
-                turretInstance = _container.Instantiate(selectedTurret, transform.position, Quaternion.identity);
-            }
-            else
-            {
-                turretInstance = Instantiate(selectedTurret, transform.position, Quaternion.identity);
-            }
+            turretInstance = Instantiate(selectedTurret, transform.position, Quaternion.identity);
             
             // Link the turret to this socket so it can release it when destroyed
             BaseTurret turretScript = turretInstance.GetComponent<BaseTurret>();

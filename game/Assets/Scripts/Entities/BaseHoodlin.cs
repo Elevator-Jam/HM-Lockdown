@@ -60,16 +60,8 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     {
 
     }
-    public void DropScrap()
-    {
-        if (_container != null)
-        {
-            _container.Instantiate(scrapPrefab, transform.position, Quaternion.identity);
-        }
-        else
-        {
-            Instantiate(scrapPrefab, transform.position, Quaternion.identity);
-        }
+    public void DropScrap() {
+        Instantiate(scrapPrefab, transform.position, Quaternion.identity);
     }
     public void Move()
     {

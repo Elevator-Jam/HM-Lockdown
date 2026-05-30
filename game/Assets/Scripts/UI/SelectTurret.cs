@@ -96,16 +96,8 @@ public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         // Auto-select when starting a drag
         SelectThisTurret();
 
-        if (turretPrefab != null)
-        {
-            if (_container != null)
-            {
-                ghostInstance = _container.Instantiate(turretPrefab);
-            }
-            else
-            {
-                ghostInstance = Instantiate(turretPrefab);
-            }
+        if (turretPrefab != null) {
+            ghostInstance = Instantiate(turretPrefab);
             SetupGhost(ghostInstance);
             UpdateGhostPosition();
         }

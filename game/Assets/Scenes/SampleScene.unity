@@ -2319,7 +2319,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 14.318848, y: 0}
+  m_AnchoredPosition: {x: 14.318359, y: 0}
   m_SizeDelta: {x: -1736.939, y: -1024.549}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &321584906
@@ -4377,13 +4377,6 @@ MonoBehaviour:
   healthManager: {fileID: 2119744792}
   abilityManager: {fileID: 1767667038}
   buildingManager: {fileID: 474599120}
-  selectTurrets:
-  - {fileID: 1248343400}
-  - {fileID: 2124597571}
-  buildSockets:
-  - {fileID: 1037347502}
-  abilityCooldowns:
-  - {fileID: 2076421291}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0

@@ -79,16 +79,9 @@ public class AirStrike : MonoBehaviour, IAbility
             // Spawn a payload at each spell location
             // Spawn in one payload on each side
             GameObject payloadL, payloadR;
-            if (_container != null)
-            {
-                payloadL = _container.Instantiate(airstrikePayload);
-                payloadR = _container.Instantiate(airstrikePayload);
-            }
-            else
-            {
-                payloadL = Instantiate(airstrikePayload);
-                payloadR = Instantiate(airstrikePayload);
-            }
+            payloadL = Instantiate(airstrikePayload);
+            payloadR = Instantiate(airstrikePayload);
+            
 
             // Set the position of the payloads above spell locations
             // First 3 wave should always start next to house and roll outwards

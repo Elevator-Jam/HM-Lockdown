@@ -31,8 +31,6 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    
-
     public int GetTurretValue()
     {
         return turretValue;

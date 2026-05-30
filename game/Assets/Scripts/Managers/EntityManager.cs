@@ -77,14 +77,7 @@ public class EntityManager : MonoBehaviour
             Transform pointeSelected = SetSpawnpoint();
             
             GameObject entity;
-            if (_container != null)
-            {
-                entity = _container.Instantiate(WaveSpawn[currentWave].EntityList[entitySelected], pointeSelected.position, Quaternion.identity);
-            }
-            else
-            {
-                entity = Instantiate(WaveSpawn[currentWave].EntityList[entitySelected], pointeSelected.position, Quaternion.identity);
-            }
+            entity = Instantiate(WaveSpawn[currentWave].EntityList[entitySelected], pointeSelected.position, Quaternion.identity);
 
             entity.GetComponent<IEntity>().SetTarget(target);
 
