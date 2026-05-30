@@ -1,6 +1,8 @@
+using System;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace HM.Lockdown.GameFeel.Editor {
     [CustomEditor(typeof(GameFeelEvent))]
@@ -19,9 +21,10 @@ namespace HM.Lockdown.GameFeel.Editor {
                 drawHeaderCallback = (Rect rect) => {
                     EditorGUI.LabelField(rect, "Actions");
                 },
-                onAddDropdownCallback = OnArrayDropdown,
                 drawElementCallback = OnArrayDrawElement,
-                elementHeightCallback = GetArrayElementHeight
+                elementHeightCallback = GetArrayElementHeight,
+                onAddDropdownCallback = OnArrayDropdown,
+                onRemoveCallback = OnArrayRemove
             };
         }
 
@@ -35,15 +38,19 @@ namespace HM.Lockdown.GameFeel.Editor {
             serializedObject.ApplyModifiedProperties();
         }
 
+        #region ReorderableList delegates
         private void OnArrayDrawElement(Rect rect, int index, bool isActive, bool isFocused) {
             // Retrieve the array element
             SerializedProperty newProp = testProp.GetArrayElementAtIndex(index);
-            GUIContent label = EditorGUI.BeginProperty(rect, new GUIContent(newProp.displayName), newProp);
+
+            // Draw the foldable array
+            string headerName = newProp.objectReferenceValue != null ? newProp.objectReferenceValue.name : "null";
+            headerName = $"{newProp.displayName} - {headerName}";
+            GUIContent label = EditorGUI.BeginProperty(rect, new GUIContent(headerName), newProp);
 
             // Setup rect
             rect.x += margin.x;
             rect.width -= margin.x;
-            rect.y += margin.y;
             rect.height = EditorGUIUtility.singleLineHeight;
             bool foldOut = EditorGUI.BeginFoldoutHeaderGroup(rect, true, label);
 
@@ -62,7 +69,7 @@ namespace HM.Lockdown.GameFeel.Editor {
             iterator.NextVisible(true);
 
             // Setup rect
-            rect.y += EditorGUIUtility.singleLineHeight;
+            rect.y += EditorGUIUtility.singleLineHeight + margin.y;
 
             // Draw all fields
             while (iterator.NextVisible(true)) {
@@ -109,23 +116,72 @@ namespace HM.Lockdown.GameFeel.Editor {
         }
 
         private void OnArrayAdd(object add) {
+            // Create a new test instance
+            ITest newTest = CreateInstance<TestOne>();
+            newTest.name = nameof(TestOne);
+            AssetDatabase.AddObjectToAsset(newTest, serializedObject.targetObject);
+            AssetDatabase.SaveAssets();
+
             // Add an empty entry
             testProp.arraySize += 1;
 
             // Retrieve the array element
             SerializedProperty newProp = testProp.GetArrayElementAtIndex(testProp.arraySize - 1);
 
-            // Create a new test instance
-            ITest newTest = CreateInstance<TestOne>();
-            newTest.name = nameof(TestOne);
-            AssetDatabase.AddObjectToAsset(newTest, serializedObject.targetObject);
-
             // Change the null reference to an actual instance
             newProp.objectReferenceValue = newTest;
 
             // Apply changes to the serializedProperty
             serializedObject.ApplyModifiedProperties();
-            AssetDatabase.SaveAssets();
+
+            // Create new undo group
+            Undo.SetCurrentGroupName($"Add {newTest.name} to GameFeelEvent");
+            int group = Undo.GetCurrentGroup();
+            Undo.RegisterCreatedObjectUndo(newTest, $"Create a new {newTest.name}");
+            Undo.RecordObject(serializedObject.targetObject, "Add new element to array");
+            Undo.CollapseUndoOperations(group);
         }
+
+        private void OnArrayRemove(ReorderableList list) {
+            // Make sure there's something to remove
+            if (list.selectedIndices.Count <= 0) {
+                return;
+            }
+
+            // Setup list of objects to destroy
+            var toDestroy = new List<UnityEngine.Object>(list.selectedIndices.Count);
+
+            // Remove the elements from the array in reverse chronological order
+            var indicesSorted = new List<int>(list.selectedIndices);
+            indicesSorted.Sort();
+            for (int i = indicesSorted.Count - 1; i >= 0; --i) {
+                // Collect objects to destroy
+                int index = indicesSorted[i];
+                SerializedProperty prop = list.serializedProperty.GetArrayElementAtIndex(index);
+                toDestroy.Add(prop.objectReferenceValue);
+
+                // Removing in reverse order to make sure elements indices don't get shifted too much
+                list.serializedProperty.DeleteArrayElementAtIndex(index);
+            }
+
+            // Apply changes to the serializedProperty
+            serializedObject.ApplyModifiedProperties();
+
+            // Create new undo group
+            Undo.SetCurrentGroupName("Remove elements from GameFeelEvent");
+            int group = Undo.GetCurrentGroup();
+            Undo.RecordObject(serializedObject.targetObject, "Remove elements from array");
+
+            // Destroy removed objects
+            foreach (UnityEngine.Object subObject in toDestroy) {
+                Undo.DestroyObjectImmediate(subObject);
+            }
+
+            // Close the undo group
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            Undo.CollapseUndoOperations(group);
+        }
+        #endregion
     }
 }
