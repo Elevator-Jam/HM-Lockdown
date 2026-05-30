@@ -24,6 +24,15 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     private IObjectResolver _container;
     private HealthManager _healthManager;
 
+    private void Awake() {
+        // Ask the root scope to inject into this object
+        // Assuming your LifetimeScope is in the scene, it's accessible globally
+        var scope = Object.FindAnyObjectByType<GameLifetimeScope>();
+        if (scope != null) {
+            scope.Container.Inject(this);
+        }
+    }
+
     [Inject]
     public void Construct(IObjectResolver container, HealthManager healthManager)
     {
@@ -61,7 +70,7 @@ public class BaseHoodlin : MonoBehaviour, IEntity
 
     }
     public void DropScrap() {
-        Instantiate(scrapPrefab, transform.position, Quaternion.identity);
+        _container.Instantiate(scrapPrefab, transform.position, Quaternion.identity);
     }
     public void Move()
     {

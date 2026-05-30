@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
-using VContainer;
 
 public class CurrencyManager : MonoBehaviour
 {
@@ -9,11 +8,6 @@ public class CurrencyManager : MonoBehaviour
     [SerializeField] List<ICurrency> currencyList = new List<ICurrency>();
     [SerializeField] TMP_Text scrapText;
     [SerializeField] bool reset;
-
-    [Inject]
-    public void Construct()
-    {
-    }
 
     private void Start()
     {
