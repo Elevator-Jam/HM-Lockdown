@@ -14,8 +14,7 @@ public class Scrap : MonoBehaviour
     private CurrencyManager _currencyManager;
 
     [Inject]
-    public void Construct(CurrencyManager currencyManager)
-    {
+    public void Construct(CurrencyManager currencyManager) {
         _currencyManager = currencyManager;
     }
 

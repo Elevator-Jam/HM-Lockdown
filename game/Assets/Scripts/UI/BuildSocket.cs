@@ -87,9 +87,7 @@ public class BuildSocket : MonoBehaviour
         if(CanAccept(selectedTurret, cost))
         {
             _currencyManager.SubtractScrap(cost);
-            
-            GameObject turretInstance;
-            turretInstance = Instantiate(selectedTurret, transform.position, Quaternion.identity);
+            GameObject turretInstance = Instantiate(selectedTurret, transform.position, Quaternion.identity);
             
             // Link the turret to this socket so it can release it when destroyed
             BaseTurret turretScript = turretInstance.GetComponent<BaseTurret>();

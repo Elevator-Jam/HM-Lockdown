@@ -31,8 +31,7 @@ public class BaseFiring : MonoBehaviour, IFire
     }
 
     [Inject]
-    public void Construct(GameManager gameManager)
-    {
+    public void Construct(GameManager gameManager) {
         _gameManager = gameManager;
     }
 

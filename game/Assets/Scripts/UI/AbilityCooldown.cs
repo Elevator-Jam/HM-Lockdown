@@ -20,8 +20,7 @@ public class AbilityCooldown : MonoBehaviour
     private AbilityManager _abilityManager;
 
     [Inject]
-    public void Construct(AbilityManager abilityManager)
-    {
+    public void Construct(AbilityManager abilityManager) {
         _abilityManager = abilityManager;
     }
 

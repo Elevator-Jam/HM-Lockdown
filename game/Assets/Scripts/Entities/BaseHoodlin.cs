@@ -34,8 +34,7 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     }
 
     [Inject]
-    public void Construct(IObjectResolver container, HealthManager healthManager)
-    {
+    public void Construct(IObjectResolver container, HealthManager healthManager) {
         _container = container;
         _healthManager = healthManager;
     }

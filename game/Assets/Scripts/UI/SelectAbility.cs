@@ -15,8 +15,7 @@ public class SelectAbility : MonoBehaviour
     }
 
     [Inject]
-    public void Construct(AbilityManager abilityManager)
-    {
+    public void Construct(AbilityManager abilityManager) {
         _abilityManager = abilityManager;
     }
 

@@ -11,8 +11,7 @@ public class UIManager : MonoBehaviour
     private Stack<UIPanel> panelStack;
 
     [Inject]
-    public void Construct()
-    {
+    public void Construct() {
         panels = new Dictionary<UIPanel.PanelID, UIPanel>();
         foreach (var panel in allPanels)
         {

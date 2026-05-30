@@ -13,8 +13,7 @@ public class GameManager : MonoBehaviour
     private EntityManager _entityManager;
 
     [Inject]
-    public void Construct(UIManager uiManager, EntityManager entityManager)
-    {
+    public void Construct(UIManager uiManager, EntityManager entityManager) {
         _uiManager = uiManager;
         _entityManager = entityManager;
     }

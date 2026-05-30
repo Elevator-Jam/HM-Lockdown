@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class AirStrike : MonoBehaviour, IAbility
-{  
+{
     GameObject[] spellLocationsLeft;
     GameObject[] spellLocationsRight;
     void Start()

@@ -12,8 +12,7 @@ public class PostGameMenu : UIPanel
     private UIManager _uiManager;
 
     [Inject]
-    public void Construct(GameManager gameManager, UIManager uiManager)
-    {
+    public void Construct(GameManager gameManager, UIManager uiManager) {
         _gameManager = gameManager;
         _uiManager = uiManager;
     }

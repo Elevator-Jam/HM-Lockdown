@@ -30,8 +30,7 @@ public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     }
 
     [Inject]
-    public void Construct(BuildingManager buildingManager)
-    {
+    public void Construct(BuildingManager buildingManager) {
         _buildingManager = buildingManager;
         buttonImage = GetComponent<Image>();
         if (buttonImage != null) {
