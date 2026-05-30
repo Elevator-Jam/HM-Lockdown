@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VContainer;
 
 public class Scrap : MonoBehaviour
 {
@@ -10,6 +11,12 @@ public class Scrap : MonoBehaviour
 
     private Vector3 startPos;
     private Collider2D myCollider;
+    private CurrencyManager _currencyManager;
+
+    [Inject]
+    public void Construct(CurrencyManager currencyManager) {
+        _currencyManager = currencyManager;
+    }
 
     void Start()
     {
@@ -42,11 +49,7 @@ public class Scrap : MonoBehaviour
 
     public void Collect()
     {
-        if (CurrencyManager.Instance != null)
-        {
-            CurrencyManager.Instance.AddScrap(scrapValue);
-        }
-
+        _currencyManager.AddScrap(scrapValue);
         Destroy(gameObject);
     }
 }

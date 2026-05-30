@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using VContainer;
 
 [RequireComponent(typeof(Button))]
 public class AbilityCooldown : MonoBehaviour
@@ -16,9 +17,22 @@ public class AbilityCooldown : MonoBehaviour
 
     private Button abilityButton;
     private bool isOnCooldown = false;
+    private AbilityManager _abilityManager;
+
+    [Inject]
+    public void Construct(AbilityManager abilityManager) {
+        _abilityManager = abilityManager;
+    }
 
     private void Awake()
     {
+        // Ask the root scope to inject into this object
+        // Assuming your LifetimeScope is in the scene, it's accessible globally
+        var scope = Object.FindAnyObjectByType<GameLifetimeScope>();
+        if (scope != null) {
+            scope.Container.Inject(this);
+        }
+        
         abilityButton = GetComponent<Button>();
         
         // If no ID is provided, fallback to the GameObject's name like the old script did
@@ -43,12 +57,11 @@ public class AbilityCooldown : MonoBehaviour
         if (isOnCooldown) return;
 
         // Perform the ability
-        if (AbilityManager.Instance != null)
-        {
-            if (cooldownOverlay != null) cooldownOverlay.fillAmount = 0;
-            AbilityManager.Instance.PerformAbility(abilityID);
-            StartCoroutine(StartCooldown());
+        if (cooldownOverlay != null) {
+            cooldownOverlay.fillAmount = 0;
         }
+        _abilityManager.PerformAbility(abilityID);
+        StartCoroutine(StartCooldown());
     }
 
     private IEnumerator StartCooldown()

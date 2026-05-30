@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 public class PostGameMenu : UIPanel
 {
@@ -6,6 +7,15 @@ public class PostGameMenu : UIPanel
     private CanvasGroup winCanvasGroup;
     [SerializeField]
     private CanvasGroup loseCanvasGroup;
+
+    private GameManager _gameManager;
+    private UIManager _uiManager;
+
+    [Inject]
+    public void Construct(GameManager gameManager, UIManager uiManager) {
+        _gameManager = gameManager;
+        _uiManager = uiManager;
+    }
 
     protected override void Awake()
     {
@@ -55,7 +65,7 @@ public class PostGameMenu : UIPanel
     // Restarts game on button clicked
     public void OnClickRestart()
     {
-        GameManager.Instance.RestartGame();
+        _gameManager.RestartGame();
         base.Hide();
     }
     
@@ -63,11 +73,11 @@ public class PostGameMenu : UIPanel
     public void OnClickMainMenu()
     {
         // switch ui to main menu ui
-        UIManager.Instance.SwitchToMainMenu();
+        _uiManager.SwitchToMainMenu();
     }
 
     public void OnClickExit()
     {
-        GameManager.Instance.ExitGame();
+        _gameManager.ExitGame();
     }
 }

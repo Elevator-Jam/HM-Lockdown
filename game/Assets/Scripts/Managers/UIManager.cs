@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 
-public class UIManager : SingletonConstructor<UIManager>
+public class UIManager : MonoBehaviour
 {
     [SerializeField]
     private List<UIPanel> allPanels;
@@ -9,9 +10,8 @@ public class UIManager : SingletonConstructor<UIManager>
     private Dictionary<UIPanel.PanelID, UIPanel> panels;
     private Stack<UIPanel> panelStack;
 
-    private void Awake()
-    {
-        ConstructSingleton(this); // ! DO NOT DELETE
+    [Inject]
+    public void Construct() {
         panels = new Dictionary<UIPanel.PanelID, UIPanel>();
         foreach (var panel in allPanels)
         {

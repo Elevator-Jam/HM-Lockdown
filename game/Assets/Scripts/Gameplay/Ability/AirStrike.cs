@@ -7,7 +7,6 @@ public class AirStrike : MonoBehaviour, IAbility
     GameObject[] spellLocationsRight;
     void Start()
     {
-
         spellLocationsLeft = GameObject.FindGameObjectsWithTag("SpellLocationLeft");
         spellLocationsRight = GameObject.FindGameObjectsWithTag("SpellLocationRight");
     }
@@ -90,7 +89,6 @@ public class AirStrike : MonoBehaviour, IAbility
 
             Destroy(payloadL, 2f);
             Destroy(payloadR, 2f);
-
         }
     }
 

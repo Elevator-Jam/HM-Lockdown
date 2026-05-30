@@ -1,18 +1,14 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using TMPro;
-public class CurrencyManager : SingletonConstructor<CurrencyManager>
+
+public class CurrencyManager : MonoBehaviour
 {
     [SerializeField] int _totalScraps;
     [SerializeField] List<ICurrency> currencyList = new List<ICurrency>();
     [SerializeField] TMP_Text scrapText;
     [SerializeField] bool reset;
-    private void Awake()
-    {
-        ConstructSingleton(this); // ! DO NOT DELETE
-    }
+
     private void Start()
     {
         ResetResources();

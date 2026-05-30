@@ -1,19 +1,10 @@
-using System;
 using UnityEngine;
-using System.Collections;
 
-
-public class AbilityManager : SingletonConstructor<AbilityManager>
+public class AbilityManager : MonoBehaviour
 {
     [SerializeField] string selectedAbility;
 
     AirStrike airStrikeInstance;
-
-
-    private void Awake()
-    {
-        ConstructSingleton(this); // ! DO NOT DELETE
-    }
 
     void Start()
     {
@@ -31,12 +22,10 @@ public class AbilityManager : SingletonConstructor<AbilityManager>
         switch (ability)
         {
             case "ability_airstrike_1":
-                Debug.Log("Casting airstrike level 1");
                 airStrikeInstance.CastAbility(1);
 
                 break;
             case "ability_airstrike_2":
-                Debug.Log("Casting airstrike level 2");
                 airStrikeInstance.CastAbility(2);
                 break;
             default:

@@ -2,13 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class EntityManager : SingletonConstructor<EntityManager>
+public class EntityManager : MonoBehaviour
 {
-    private void Awake()
-    {
-        ConstructSingleton(this); // ! DO NOT DELETE
-    }
-
     // TODO: Create an optimized Object pool
     /// Function: WaveLoader
     /// <summary>

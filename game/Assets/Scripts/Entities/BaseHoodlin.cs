@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using VContainer;
+using VContainer.Unity;
+
 public class BaseHoodlin : MonoBehaviour, IEntity
 {
     private static int cnt = 0;
@@ -18,6 +21,23 @@ public class BaseHoodlin : MonoBehaviour, IEntity
 
     private Quaternion backRotL, forwardRotL, backRotR, forwardRotR;
     private Quaternion neutralRot;
+    private IObjectResolver _container;
+    private HealthManager _healthManager;
+
+    private void Awake() {
+        // Ask the root scope to inject into this object
+        // Assuming your LifetimeScope is in the scene, it's accessible globally
+        var scope = Object.FindAnyObjectByType<GameLifetimeScope>();
+        if (scope != null) {
+            scope.Container.Inject(this);
+        }
+    }
+
+    [Inject]
+    public void Construct(IObjectResolver container, HealthManager healthManager) {
+        _container = container;
+        _healthManager = healthManager;
+    }
 
     public static void ResetStatics()
     {
@@ -48,9 +68,8 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     {
 
     }
-    public void DropScrap()
-    {
-        Instantiate(scrapPrefab, transform.position, Quaternion.identity);
+    public void DropScrap() {
+        _container.Instantiate(scrapPrefab, transform.position, Quaternion.identity);
     }
     public void Move()
     {
@@ -61,7 +80,7 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     }
     public void Attack()
     {
-        HealthManager.Instance.TakeDamage(damage);
+        _healthManager.TakeDamage(damage);
     }
 
     IEnumerator AttackCooldown()

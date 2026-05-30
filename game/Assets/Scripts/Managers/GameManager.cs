@@ -1,21 +1,23 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-public class GameManager : SingletonConstructor<GameManager>
-{
-    private void Awake()
-    {
-        ConstructSingleton(this); // ! DO NOT DELETE
-    }
+using VContainer;
 
+public class GameManager : MonoBehaviour
+{
     [Header("UI Manager")]
-    [SerializeField] UIManager uiManager;
+    private UIManager _uiManager;
 
     [Header("Entity Manager")]
-    [SerializeField] EntityManager entityManager;
+    private EntityManager _entityManager;
+
+    [Inject]
+    public void Construct(UIManager uiManager, EntityManager entityManager) {
+        _uiManager = uiManager;
+        _entityManager = entityManager;
+    }
+
 
     [Header("Game Timer")]
     [SerializeField] Slider timerSlider;
@@ -69,7 +71,7 @@ public class GameManager : SingletonConstructor<GameManager>
         switch (gameState)
         {
             case GameState.not_started: // game is in the main menu
-                uiManager.SwitchToMainMenu();
+                _uiManager.SwitchToMainMenu();
                 Time.timeScale = 0;
                 break;
 
@@ -86,26 +88,26 @@ public class GameManager : SingletonConstructor<GameManager>
             case GameState.survival:
                 Time.timeScale = 1;
                 SetTimer(survivalTimeInMinutes, survivalTimeInSeconds);
-                spawnRoutine = StartCoroutine(EntityManager.Instance.SpawnCooldown());
+                spawnRoutine = StartCoroutine(_entityManager.SpawnCooldown());
                 break;
                 
             case GameState.paused:
                 Time.timeScale = 0;
-                uiManager.SwitchToPauseMenu();
+                _uiManager.SwitchToPauseMenu();
                 break;
 
             case GameState.lose:
                 // Pause game
                 Time.timeScale = 0;
                 // Display post game menu lost
-                uiManager.SwitchToPostGameMenu(false);
+                _uiManager.SwitchToPostGameMenu(false);
                 break;
 
             case GameState.win:
                 // Pause game
                 Time.timeScale = 0;
                 // Display post game menu win
-                uiManager.SwitchToPostGameMenu(true);
+                _uiManager.SwitchToPostGameMenu(true);
                 break;
             default:
                 break;
@@ -167,7 +169,7 @@ public class GameManager : SingletonConstructor<GameManager>
 
     public void UnpauseGame()
     {
-        uiManager.CloseTopUI();
+        _uiManager.CloseTopUI();
         if (gameState != GameState.paused) 
         {
             return;
@@ -244,4 +246,3 @@ public class GameManager : SingletonConstructor<GameManager>
         timerSlider.value = currentTimer;
     }
 }
-
