@@ -15,7 +15,6 @@ public class CurrencyManager : MonoBehaviour
         UpdateCurrencyText();
     }
 
-
     /// Function: ResetResources
     /// <summary>
     /// Purpose: to set all values back to zero
