@@ -1,8 +1,8 @@
-using System;
+using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.AnimatedValues;
 using UnityEditorInternal;
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace HM.Lockdown.GameFeel.Editor {
     [CustomEditor(typeof(GameFeelEvent))]
@@ -11,6 +11,7 @@ namespace HM.Lockdown.GameFeel.Editor {
         private static readonly Vector2 margin = new(16, 2);
         SerializedProperty testProp;
         ReorderableList testGui;
+        readonly List<AnimBool> foldoutOpen = new();
 
         void OnEnable() {
             // Setup the SerializedProperties.
@@ -26,6 +27,14 @@ namespace HM.Lockdown.GameFeel.Editor {
                 onAddDropdownCallback = OnArrayDropdown,
                 onRemoveCallback = OnArrayRemove
             };
+
+            // Update fold-out status
+            while (foldoutOpen.Count < testProp.arraySize) {
+                foldoutOpen.Add(new AnimBool(false));
+            }
+            while (foldoutOpen.Count > testProp.arraySize) {
+                foldoutOpen.RemoveAt(foldoutOpen.Count - 1);
+            }
         }
 
         public override void OnInspectorGUI() {
@@ -43,45 +52,52 @@ namespace HM.Lockdown.GameFeel.Editor {
             // Retrieve the array element
             SerializedProperty newProp = testProp.GetArrayElementAtIndex(index);
 
-            // Draw the foldable array
+            // Setup property
             string headerName = newProp.objectReferenceValue != null ? newProp.objectReferenceValue.name : "null";
             headerName = $"{newProp.displayName} - {headerName}";
-            GUIContent label = EditorGUI.BeginProperty(rect, new GUIContent(headerName), newProp);
 
-            // Setup rect
-            rect.x += margin.x;
-            rect.width -= margin.x;
-            rect.height = EditorGUIUtility.singleLineHeight;
-            bool foldOut = EditorGUI.BeginFoldoutHeaderGroup(rect, true, label);
+            //using (new EditorGUI.IndentLevelScope())
+            using (var scope = new EditorGUI.PropertyScope(rect, new GUIContent(headerName), newProp)) {
+                // Setup rect
+                rect.x += margin.x;
+                rect.width -= margin.x;
+                rect.height = EditorGUIUtility.singleLineHeight;
 
-            // Neato
-            if (newProp.objectReferenceValue == null) {
-                return;
-            }
+                // Draw the foldable array
+                foldoutOpen[index].target = EditorGUI.BeginFoldoutHeaderGroup(rect, foldoutOpen[index].target, scope.content);
 
-            // Neato
-            UnityEditor.Editor editor = CreateEditor(newProp.objectReferenceValue);
-            SerializedObject toEdit = editor.serializedObject;
-            toEdit.Update();
+                // Don't draw any elements if collapsed
+                // Don't draw anything if object is null
+                if (!foldoutOpen[index].target || (newProp.objectReferenceValue == null)) {
+                    EditorGUI.EndFoldoutHeaderGroup();
+                    return;
+                }
 
-            // Skip the first scriptable object argument
-            SerializedProperty iterator = toEdit.GetIterator();
-            iterator.NextVisible(true);
+                // Neato
+                UnityEditor.Editor editor = CreateEditor(newProp.objectReferenceValue);
+                SerializedObject toEdit = editor.serializedObject;
+                toEdit.Update();
 
-            // Setup rect
-            rect.y += EditorGUIUtility.singleLineHeight + margin.y;
+                // Skip the first scriptable object argument
+                SerializedProperty iterator = toEdit.GetIterator();
+                iterator.NextVisible(true);
 
-            // Draw all fields
-            while (iterator.NextVisible(true)) {
-                EditorGUI.PropertyField(rect, iterator);
+                // Setup rect
                 rect.y += EditorGUIUtility.singleLineHeight + margin.y;
-            }
 
-            if (GUI.changed) {
-                toEdit.ApplyModifiedProperties();
+                // Draw all fields
+                while (iterator.NextVisible(true)) {
+                    EditorGUI.PropertyField(rect, iterator);
+                    rect.y += EditorGUIUtility.singleLineHeight + margin.y;
+                }
+
+                if (GUI.changed) {
+                    toEdit.ApplyModifiedProperties();
+                }
+
+                // Close out the header group
+                EditorGUI.EndFoldoutHeaderGroup();
             }
-            EditorGUI.EndFoldoutHeaderGroup();
-            EditorGUI.EndProperty();
         }
 
         private float GetArrayElementHeight(int index) {
@@ -89,8 +105,8 @@ namespace HM.Lockdown.GameFeel.Editor {
             float toReturn = EditorGUIUtility.singleLineHeight;
             SerializedProperty newProp = testProp.GetArrayElementAtIndex(index);
 
-            // Neato
-            if (newProp.objectReferenceValue == null) {
+            // Render only 1 line if drawing collapsed header or if object is null
+            if (!foldoutOpen[index].target || (newProp.objectReferenceValue == null)) {
                 return toReturn;
             }
 
@@ -140,6 +156,11 @@ namespace HM.Lockdown.GameFeel.Editor {
             Undo.RegisterCreatedObjectUndo(newTest, $"Create a new {newTest.name}");
             Undo.RecordObject(serializedObject.targetObject, "Add new element to array");
             Undo.CollapseUndoOperations(group);
+
+            // Update fold-out status
+            while (foldoutOpen.Count < testProp.arraySize) {
+                foldoutOpen.Add(new AnimBool(true));
+            }
         }
 
         private void OnArrayRemove(ReorderableList list) {
@@ -149,7 +170,7 @@ namespace HM.Lockdown.GameFeel.Editor {
             }
 
             // Setup list of objects to destroy
-            var toDestroy = new List<UnityEngine.Object>(list.selectedIndices.Count);
+            var toDestroy = new List<Object>(list.selectedIndices.Count);
 
             // Remove the elements from the array in reverse chronological order
             var indicesSorted = new List<int>(list.selectedIndices);
@@ -173,7 +194,7 @@ namespace HM.Lockdown.GameFeel.Editor {
             Undo.RecordObject(serializedObject.targetObject, "Remove elements from array");
 
             // Destroy removed objects
-            foreach (UnityEngine.Object subObject in toDestroy) {
+            foreach (var subObject in toDestroy) {
                 Undo.DestroyObjectImmediate(subObject);
             }
 
@@ -181,6 +202,11 @@ namespace HM.Lockdown.GameFeel.Editor {
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             Undo.CollapseUndoOperations(group);
+
+            // Update foldout status
+            while (foldoutOpen.Count > testProp.arraySize) {
+                foldoutOpen.RemoveAt(foldoutOpen.Count - 1);
+            }
         }
         #endregion
     }
