@@ -15,7 +15,7 @@ namespace HM.Lockdown.GameFeel.Editor {
 
         void OnEnable() {
             // Setup the SerializedProperties.
-            testProp = serializedObject.FindProperty("test");
+            testProp = serializedObject.FindProperty(GameFeelEvent.NAME_ACTIONS);
 
             // Setup the test gui
             testGui = new(serializedObject, testProp) {
@@ -133,9 +133,9 @@ namespace HM.Lockdown.GameFeel.Editor {
 
         private void OnArrayAdd(object add) {
             // Create a new test instance
-            ITest newTest = CreateInstance<TestOne>();
-            newTest.name = nameof(TestOne);
-            AssetDatabase.AddObjectToAsset(newTest, serializedObject.targetObject);
+            GameFeelAction newAction = CreateInstance<TestOne>();
+            newAction.name = nameof(TestOne);
+            AssetDatabase.AddObjectToAsset(newAction, serializedObject.targetObject);
             AssetDatabase.SaveAssets();
 
             // Add an empty entry
@@ -145,15 +145,15 @@ namespace HM.Lockdown.GameFeel.Editor {
             SerializedProperty newProp = testProp.GetArrayElementAtIndex(testProp.arraySize - 1);
 
             // Change the null reference to an actual instance
-            newProp.objectReferenceValue = newTest;
+            newProp.objectReferenceValue = newAction;
 
             // Apply changes to the serializedProperty
             serializedObject.ApplyModifiedProperties();
 
             // Create new undo group
-            Undo.SetCurrentGroupName($"Add {newTest.name} to GameFeelEvent");
+            Undo.SetCurrentGroupName($"Add {newAction.name} to GameFeelEvent");
             int group = Undo.GetCurrentGroup();
-            Undo.RegisterCreatedObjectUndo(newTest, $"Create a new {newTest.name}");
+            Undo.RegisterCreatedObjectUndo(newAction, $"Create a new {newAction.name}");
             Undo.RecordObject(serializedObject.targetObject, "Add new element to array");
             Undo.CollapseUndoOperations(group);
 

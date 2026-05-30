@@ -18,10 +18,9 @@ namespace HM.Lockdown.GameFeel {
 
             // Set member variables
             Invoker = invoker;
-            arguments = new(startingSize);
-            //arguments = new(startingSize) { {
-            //    GameFeelAction.DEFAULT_NAME_SOURCE, source
-            //} };
+            arguments = new(startingSize) { {
+                GameFeelAction.DEFAULT_NAME_SOURCE, source
+            } };
         }
 
         /// <summary>
