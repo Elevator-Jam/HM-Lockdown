@@ -58,13 +58,11 @@ public class AbilityCooldown : MonoBehaviour
         if (isOnCooldown) return;
 
         // Perform the ability
-        var manager = _abilityManager;
-        if (manager != null)
-        {
-            if (cooldownOverlay != null) cooldownOverlay.fillAmount = 0;
-            manager.PerformAbility(abilityID);
-            StartCoroutine(StartCooldown());
+        if (cooldownOverlay != null) {
+            cooldownOverlay.fillAmount = 0;
         }
+        _abilityManager.PerformAbility(abilityID);
+        StartCoroutine(StartCooldown());
     }
 
     private IEnumerator StartCooldown()

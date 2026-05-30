@@ -1,18 +1,8 @@
 using UnityEngine;
 using System.Collections;
-using VContainer;
-using VContainer.Unity;
 
 public class AirStrike : MonoBehaviour, IAbility
-{
-    private IObjectResolver _container;
-
-    [Inject]
-    public void Construct(IObjectResolver container)
-    {
-        _container = container;
-    }
-    
+{    
     GameObject[] spellLocationsLeft;
     GameObject[] spellLocationsRight;
     void Start()
@@ -78,9 +68,8 @@ public class AirStrike : MonoBehaviour, IAbility
         {
             // Spawn a payload at each spell location
             // Spawn in one payload on each side
-            GameObject payloadL, payloadR;
-            payloadL = Instantiate(airstrikePayload);
-            payloadR = Instantiate(airstrikePayload);
+            GameObject payloadL = Instantiate(airstrikePayload);
+            GameObject payloadR = Instantiate(airstrikePayload);
             
 
             // Set the position of the payloads above spell locations
@@ -102,7 +91,6 @@ public class AirStrike : MonoBehaviour, IAbility
 
             Destroy(payloadL, 2f);
             Destroy(payloadR, 2f);
-
         }
     }
 

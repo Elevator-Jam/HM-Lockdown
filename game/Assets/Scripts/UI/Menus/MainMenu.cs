@@ -18,40 +18,25 @@ public class MainMenu : UIPanel
         // hide ui
         base.Hide();
         // start game
-        var manager = _gameManager;
-        if (manager != null) {
-            manager.StartGame();
-        }
-        else {
-            Debug.LogWarning("no gamee manager");
-        }
+        _gameManager.StartGame();
     }
 
     // Opens settings menu when the "settings" button is clicked
     public void OnClickSettings()
     {
         // Open settings menu
-        var manager = _uiManager;
-        if (manager != null) {
-            manager.SwitchToSettingsMenu();
-        }
+        _uiManager.SwitchToSettingsMenu();
     }
 
     // Quits game when the "exit" button is clicked
     public void OnClickExit()
     {
-        var manager = _gameManager;
-        if (manager != null) {
-            manager.ExitGame();
-        }
+        _gameManager.ExitGame();
     }
 
     // Opens a menu that displays credits when the "credits" button is clicked
     public void OnClickCredits()
     {
-        var manager = _uiManager;
-        if (manager != null) {
-            manager.SwitchToCredits();
-        }
+        _uiManager.SwitchToCredits();
     }
 }

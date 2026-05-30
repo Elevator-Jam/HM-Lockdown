@@ -1,6 +1,5 @@
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
 
 public class BuildSocket : MonoBehaviour
 {
@@ -10,7 +9,6 @@ public class BuildSocket : MonoBehaviour
 
     private CurrencyManager _currencyManager;
     private BuildingManager _buildingManager;
-    private IObjectResolver _container;
 
     private void Awake() {
         // Ask the root scope to inject into this object
@@ -26,11 +24,9 @@ public class BuildSocket : MonoBehaviour
     }
 
     [Inject]
-    public void Construct(CurrencyManager currencyManager, BuildingManager buildingManager, IObjectResolver container)
-    {
+    public void Construct(CurrencyManager currencyManager, BuildingManager buildingManager) {
         _currencyManager = currencyManager;
         _buildingManager = buildingManager;
-        _container = container;
     }
 
     bool CanAccept(GameObject placeable, int cost)
@@ -54,8 +50,7 @@ public class BuildSocket : MonoBehaviour
         }
         
         // Check if player has enough scrap
-        var manager = _currencyManager;
-        int currentScrap = manager != null ? manager.GetScrap() : 0;
+        int currentScrap = _currencyManager.GetScrap();
         if (currentScrap < cost)
         {
             Debug.Log($"[BuildSocket] Build failed: Not enough scrap. Have: {currentScrap}, Need: {cost}");
@@ -86,17 +81,12 @@ public class BuildSocket : MonoBehaviour
 
     public void Occupy()
     {
-        var buildManager = _buildingManager;
-        GameObject selectedTurret = buildManager != null ? buildManager.GetTurretSelected() : null;
-        int cost = buildManager != null ? buildManager.GetTurretValue() : 0;
+        GameObject selectedTurret = _buildingManager.GetTurretSelected();
+        int cost = _buildingManager.GetTurretValue();
 
         if(CanAccept(selectedTurret, cost))
         {
-            var currencyManager = _currencyManager;
-            if (currencyManager != null)
-            {
-                currencyManager.SubtractScrap(cost);
-            }
+            _currencyManager.SubtractScrap(cost);
             
             GameObject turretInstance;
             turretInstance = Instantiate(selectedTurret, transform.position, Quaternion.identity);

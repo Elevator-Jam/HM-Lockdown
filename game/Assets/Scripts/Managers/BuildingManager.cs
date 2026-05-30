@@ -1,16 +1,10 @@
 using UnityEngine;
-using VContainer;
 
 public class BuildingManager : MonoBehaviour
 {
     [SerializeField] GameObject turretSelected;
     [SerializeField] int turretValue;
     [SerializeField] GameObject socketDisplay;
-
-    [Inject]
-    public void Construct()
-    {
-    }
 
     public GameObject GetTurretSelected()
     {

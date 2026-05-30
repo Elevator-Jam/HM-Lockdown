@@ -10,8 +10,6 @@ public class UIManager : MonoBehaviour
     private Dictionary<UIPanel.PanelID, UIPanel> panels;
     private Stack<UIPanel> panelStack;
 
-    //private UIManager _uiManager;
-
     [Inject]
     public void Construct()
     {

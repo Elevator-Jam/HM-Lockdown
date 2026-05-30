@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using VContainer;
-using VContainer.Unity;
 
 public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -20,7 +19,6 @@ public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private GameObject ghostInstance;
     private BuildSocket currentHoveredSocket;
     private BuildingManager _buildingManager;
-    private IObjectResolver _container;
 
     private void Awake() {
         // Ask the root scope to inject into this object
@@ -32,10 +30,9 @@ public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     }
 
     [Inject]
-    public void Construct(BuildingManager buildingManager, IObjectResolver container)
+    public void Construct(BuildingManager buildingManager)
     {
         _buildingManager = buildingManager;
-        _container = container;
         buttonImage = GetComponent<Image>();
         if (buttonImage != null) {
             buttonImage.color = normalColor;
@@ -49,17 +46,13 @@ public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     private void SelectThisTurret()
     {
-        var manager = _buildingManager;
 
         // If we click the same button again, deselect it
         if (currentSelection == this)
         {
             Deselect();
-            if (manager != null)
-            {
-                manager.SetTurretSelected(null);
-                manager.SetTurretValue(0);
-            }
+            _buildingManager.SetTurretSelected(null);
+            _buildingManager.SetTurretValue(0);
             return;
         }
 
@@ -75,11 +68,8 @@ public class SelectTurret : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             buttonImage.color = selectedColor;
         }
 
-        if (manager != null)
-        {
-            manager.SetTurretSelected(turretPrefab);
-            manager.SetTurretValue(turretValue);
-        }
+        _buildingManager.SetTurretSelected(turretPrefab);
+        _buildingManager.SetTurretValue(turretValue);
     }
 
 

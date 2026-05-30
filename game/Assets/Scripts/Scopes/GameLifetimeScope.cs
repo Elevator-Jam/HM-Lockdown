@@ -20,11 +20,6 @@ public class GameLifetimeScope : LifetimeScope
     [SerializeField]
     private BuildingManager buildingManager;
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
     protected override void Configure(IContainerBuilder builder)
     {
         // Register Managers

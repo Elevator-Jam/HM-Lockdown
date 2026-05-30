@@ -81,11 +81,7 @@ public class BaseHoodlin : MonoBehaviour, IEntity
     }
     public void Attack()
     {
-        var manager = _healthManager;
-        if (manager != null)
-        {
-            manager.TakeDamage(damage);
-        }
+        _healthManager.TakeDamage(damage);
     }
 
     IEnumerator AttackCooldown()

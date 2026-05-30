@@ -19,50 +19,35 @@ public class PauseMenu : UIPanel
         // show pause menu
         base.Hide();
         // restart game
-        var manager = _gameManager;
-        if (manager != null) {
-            manager.RestartGame();
-        }
+        _gameManager.RestartGame();
     }
 
     // Resumes the game and closes the pause menu
     public void OnClickResume()
     {
         // Close pause menu
-        var uiManager = _uiManager;
-        if (uiManager != null) uiManager.CloseTopUI();
+        _uiManager.CloseTopUI();
         //resume game
-        var gameManager = _gameManager;
-        if (gameManager != null) gameManager.UnpauseGame();
+        _gameManager.UnpauseGame();
     }
 
     // Return to main menu when "exit" button is clicked
     public void OnClickExit()
     {
         // finish game
-        var gameManager = _gameManager;
-        if (gameManager != null) {
-            gameManager.EndGame();
-        }
+        _gameManager.EndGame();
+        
         // switch main menu UI
-        var uiManager = _uiManager;
-        if (uiManager != null) {
-            uiManager.SwitchToMainMenu();
-        }
+        _uiManager.SwitchToMainMenu();
     }
 
     // Opens settings menu when "settings" button is clicked
     public void OnClickSettings()
     {
         // pause game
-        var gameManager = _gameManager;
-        if (gameManager != null) {
-            gameManager.PauseGame();
-        }
+        _gameManager.PauseGame();
+        
         // Open settings menu UI
-        var uiManager = _uiManager;
-        if (uiManager != null) {
-            uiManager.SwitchToSettingsMenu();
-        }
+        _uiManager.SwitchToSettingsMenu();
     }
 }

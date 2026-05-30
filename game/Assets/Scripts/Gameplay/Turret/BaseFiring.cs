@@ -3,9 +3,8 @@ using UnityEngine.InputSystem;
 using System.Collections;
 using System.Linq;
 using VContainer;
-using VContainer.Unity;
 
-public class BaseFiring : MonoBehaviour, IFire, IStartable
+public class BaseFiring : MonoBehaviour, IFire
 {
     [SerializeField] bool isManual = false;
     [SerializeField] private int currFirepointIdx = 0;
@@ -21,7 +20,6 @@ public class BaseFiring : MonoBehaviour, IFire, IStartable
 
     private float lastFireTime = 0f;
     private GameManager _gameManager;
-    private IObjectResolver _container;
 
     private void Awake() {
         // Ask the root scope to inject into this object
@@ -33,10 +31,9 @@ public class BaseFiring : MonoBehaviour, IFire, IStartable
     }
 
     [Inject]
-    public void Construct(GameManager gameManager, IObjectResolver container)
+    public void Construct(GameManager gameManager)
     {
         _gameManager = gameManager;
-        _container = container;
     }
 
     public void Fire(Vector3? targetPosition = null)
@@ -69,8 +66,7 @@ public class BaseFiring : MonoBehaviour, IFire, IStartable
             }
         }
 
-        GameObject bullet;
-        bullet = Instantiate(bulletPrefab, firepoint.position, bulletRotation);
+        GameObject bullet = Instantiate(bulletPrefab, firepoint.position, bulletRotation);
         
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
@@ -100,7 +96,7 @@ public class BaseFiring : MonoBehaviour, IFire, IStartable
         }
     }
 
-    public void Start()
+    void Start()
     {
         if (!isManual)
         {
@@ -110,8 +106,7 @@ public class BaseFiring : MonoBehaviour, IFire, IStartable
 
     private void Update()
     {
-        var manager = _gameManager;
-        if (isManual && manager != null && manager.gameState != GameManager.GameState.paused)
+        if (isManual && _gameManager.gameState != GameManager.GameState.paused)
         {
             if (Pointer.current != null && Pointer.current.press.isPressed)
             {

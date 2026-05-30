@@ -50,12 +50,8 @@ public class HealthManager : MonoBehaviour
         {
             currentHealth = 0;
             // call lose sequence here
-            var manager = _gameManager;
-            if (manager != null)
-            {
-                manager.gameState = GameManager.GameState.lose;
-                manager.SetState();
-            }
+            _gameManager.gameState = GameManager.GameState.lose;
+            _gameManager.SetState();
         }
         healthSlider.value = currentHealth;
     }

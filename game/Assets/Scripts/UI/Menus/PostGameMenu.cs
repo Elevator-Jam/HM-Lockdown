@@ -66,10 +66,7 @@ public class PostGameMenu : UIPanel
     // Restarts game on button clicked
     public void OnClickRestart()
     {
-        var manager = _gameManager;
-        if (manager != null) {
-            manager.RestartGame();
-        }
+        _gameManager.RestartGame();
         base.Hide();
     }
     
@@ -77,17 +74,11 @@ public class PostGameMenu : UIPanel
     public void OnClickMainMenu()
     {
         // switch ui to main menu ui
-        var manager = _uiManager;
-        if (manager != null) {
-            manager.SwitchToMainMenu();
-        }
+        _uiManager.SwitchToMainMenu();
     }
 
     public void OnClickExit()
     {
-        var manager = _gameManager;
-        if (manager != null) {
-            manager.ExitGame();
-        }
+        _gameManager.ExitGame();
     }
 }

@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using VContainer;
@@ -71,13 +69,10 @@ public class GameManager : MonoBehaviour
     Coroutine spawnRoutine;
     public void SetState()
     {
-        var uiManager = _uiManager;
-        var entityManager = _entityManager;
-
         switch (gameState)
         {
             case GameState.not_started: // game is in the main menu
-                if (uiManager != null) uiManager.SwitchToMainMenu();
+                _uiManager.SwitchToMainMenu();
                 Time.timeScale = 0;
                 break;
 
@@ -94,26 +89,26 @@ public class GameManager : MonoBehaviour
             case GameState.survival:
                 Time.timeScale = 1;
                 SetTimer(survivalTimeInMinutes, survivalTimeInSeconds);
-                if (entityManager != null) spawnRoutine = StartCoroutine(entityManager.SpawnCooldown());
+                spawnRoutine = StartCoroutine(_entityManager.SpawnCooldown());
                 break;
                 
             case GameState.paused:
                 Time.timeScale = 0;
-                if (uiManager != null) uiManager.SwitchToPauseMenu();
+                _uiManager.SwitchToPauseMenu();
                 break;
 
             case GameState.lose:
                 // Pause game
                 Time.timeScale = 0;
                 // Display post game menu lost
-                if (uiManager != null) uiManager.SwitchToPostGameMenu(false);
+                _uiManager.SwitchToPostGameMenu(false);
                 break;
 
             case GameState.win:
                 // Pause game
                 Time.timeScale = 0;
                 // Display post game menu win
-                if (uiManager != null) uiManager.SwitchToPostGameMenu(true);
+                _uiManager.SwitchToPostGameMenu(true);
                 break;
             default:
                 break;
@@ -175,8 +170,7 @@ public class GameManager : MonoBehaviour
 
     public void UnpauseGame()
     {
-        var uiManager = _uiManager;
-        if (uiManager != null) uiManager.CloseTopUI();
+        _uiManager.CloseTopUI();
         if (gameState != GameState.paused) 
         {
             return;

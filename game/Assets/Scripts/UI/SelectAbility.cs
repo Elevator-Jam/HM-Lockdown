@@ -26,10 +26,6 @@ public class SelectAbility : MonoBehaviour
     //  be cast.
     public void OnClick()
     {
-        var manager = _abilityManager;
-        if (manager != null)
-        {
-            manager.SetSelectedAbility(this.name);
-        }
+        _abilityManager.SetSelectedAbility(this.name);
     }
 }

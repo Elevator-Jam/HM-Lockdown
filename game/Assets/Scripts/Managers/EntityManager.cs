@@ -1,19 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using VContainer;
-using VContainer.Unity;
 
 public class EntityManager : MonoBehaviour
 {
-    private IObjectResolver _container;
-
-    [Inject]
-    public void Construct(IObjectResolver container)
-    {
-        _container = container;
-    }
-
     // TODO: Create an optimized Object pool
     /// Function: WaveLoader
     /// <summary>
