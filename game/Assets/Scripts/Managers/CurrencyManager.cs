@@ -1,18 +1,26 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+
 public class CurrencyManager : SingletonConstructor<CurrencyManager>
 {
-    [SerializeField] int _totalScraps;
-    [SerializeField] List<ICurrency> currencyList = new List<ICurrency>();
-    [SerializeField] TMP_Text scrapText;
-    [SerializeField] bool reset;
+    [SerializeField]
+    private int totalScraps;
+
+    [SerializeField]
+    private List<ICurrency> currencyList = new List<ICurrency>();
+
+    [SerializeField]
+    private TMP_Text scrapText;
+
+    [SerializeField]
+    private bool reset;
+
     private void Awake()
     {
         ConstructSingleton(this); // ! DO NOT DELETE
     }
+
     private void Start()
     {
         ResetResources();
@@ -25,13 +33,14 @@ public class CurrencyManager : SingletonConstructor<CurrencyManager>
     /// </summary>
     /// <returns> Nothing </returns>
     /// <remarks>Note: if values need to be saved, look up PlayerPrefs </remarks>
-    void ResetResources()
+    private void ResetResources()
     {
-        if(!reset)
+        if (!reset)
         {
             return;
         }
-        _totalScraps = 0;
+
+        totalScraps = 0;
     }
 
     /// Function: Collect
@@ -39,13 +48,15 @@ public class CurrencyManager : SingletonConstructor<CurrencyManager>
     /// Purpose: Adds the currency into their respective values
     /// </summary>
     /// <returns> Nothing </returns>
-    /// <remarks>Note: look into raycasts to track where the player presses,
+    /// <remarks>
+    /// Note: look into raycasts to track where the player presses,
     /// figure out how to separate based on currency type,
     /// add that value into the respective amount,
-    /// and remove the item pressed on screen</remarks>
-    void Collect()
+    /// and remove the item pressed on screen
+    /// </remarks>
+    private void Collect()
     {
-        
+        // TODO: Implement currency collection logic.
     }
 
     /// Function: AutoCollect
@@ -53,10 +64,12 @@ public class CurrencyManager : SingletonConstructor<CurrencyManager>
     /// Purpose: At the end of the survival state, collect all remaining values
     /// </summary>
     /// <returns> Nothing </returns>
-    /// <remarks>Note: use the currencyList and just call collect</remarks>
-    void AutoCollect()
+    /// <remarks>
+    /// Note: use the currencyList and call Collect on remaining currencies.
+    /// </remarks>
+    private void AutoCollect()
     {
-        
+        // TODO: Implement auto collection logic.
     }
 
     /// Function: AddCurrency
@@ -64,10 +77,12 @@ public class CurrencyManager : SingletonConstructor<CurrencyManager>
     /// Purpose: Adds the currency dropped by the entity onto the list for auto collection
     /// </summary>
     /// <returns> Nothing </returns>
-    /// <remarks>Note: Entity uses this to add the scrapped dropped on defeat</remarks>
+    /// <remarks>
+    /// Note: Entity uses this to add the scrap dropped on defeat.
+    /// </remarks>
     public void AddCurrency()
     {
-        
+        // TODO: Implement currency registration logic.
     }
 
     // TODO: Create a generic collection system
@@ -80,7 +95,15 @@ public class CurrencyManager : SingletonConstructor<CurrencyManager>
     /// <remarks>Note: used once player collects scrap</remarks>
     public void AddScrap(int value)
     {
-        _totalScraps += value;
+        if (value <= 0)
+        {
+            Debug.LogWarning(
+                "[CurrencyManager] Tried to add an invalid scrap value."
+            );
+            return;
+        }
+
+        totalScraps += value;
         UpdateCurrencyText();
     }
 
@@ -89,20 +112,49 @@ public class CurrencyManager : SingletonConstructor<CurrencyManager>
     /// Purpose: Subtracts the scrap from the total
     /// </summary>
     /// <returns> Nothing </returns>
-    /// <remarks>Note: used once player spends scrap on buildings, upgrades, repairs, and anything that needs scraps</remarks>
+    /// <remarks>
+    /// Note: used once player spends scrap on buildings,
+    /// upgrades, repairs, and anything that needs scraps
+    /// </remarks>
     public void SubtractScrap(int value)
     {
-        _totalScraps -= value;
+        if (value <= 0)
+        {
+            Debug.LogWarning(
+                "[CurrencyManager] Tried to subtract an invalid scrap value."
+            );
+            return;
+        }
+
+        totalScraps = Mathf.Max(0, totalScraps - value);
         UpdateCurrencyText();
     }
 
+    /// Function: GetScrap
+    /// <summary>
+    /// Purpose: Returns the current amount of scrap
+    /// </summary>
+    /// <returns> Current scrap amount </returns>
     public int GetScrap()
     {
-        return _totalScraps;
+        return totalScraps;
     }
 
-    void UpdateCurrencyText()
+    /// Function: UpdateCurrencyText
+    /// <summary>
+    /// Purpose: Updates the scrap UI text
+    /// </summary>
+    /// <returns> Nothing </returns>
+    private void UpdateCurrencyText()
     {
-        scrapText.text = _totalScraps.ToString();
+        if (scrapText == null)
+        {
+            Debug.LogWarning(
+                "[CurrencyManager] Scrap Text is not assigned."
+            );
+            return;
+        }
+
+        scrapText.text = totalScraps.ToString();
     }
 }
